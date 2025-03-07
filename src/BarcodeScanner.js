@@ -1,18 +1,43 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   SafeAreaView,
   StyleSheet,
   Text,
   View,
-  TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
-import { CameraView } from "expo-camera";
+import { Camera, CameraView } from "expo-camera";
 import { useNavigation } from "@react-navigation/native";
 
 const BarcodeScanner = () => {
   const qrLock = useRef(false);
   const [scannedText, setScannedText] = useState("");
+  const [hasPermission, setHasPermission] = useState(null);
   const navigation = useNavigation();
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      setHasPermission(status === "granted");
+    })();
+  }, []);
+
+  if (hasPermission === null) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color="#00ffcc" />
+        <Text style={styles.loadingText}>Requesting camera access...</Text>
+      </View>
+    );
+  }
+
+  if (hasPermission === false) {
+    return (
+      <View style={styles.centered}>
+        <Text style={styles.permissionText}>No access to camera</Text>
+      </View>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -47,6 +72,24 @@ const BarcodeScanner = () => {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#000" },
+
+  centered: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#000",
+  },
+
+  loadingText: {
+    color: "#fff",
+    fontSize: 16,
+    marginTop: 10,
+  },
+
+  permissionText: {
+    color: "#ff5555",
+    fontSize: 18,
+  },
 
   overlay: {
     position: "absolute",
