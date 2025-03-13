@@ -1,19 +1,25 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useContext } from "react";
 import {
   SafeAreaView,
   StyleSheet,
   Text,
   View,
   ActivityIndicator,
+  TouchableOpacity,
 } from "react-native";
 import { Camera, CameraView } from "expo-camera";
 import { useNavigation } from "@react-navigation/native";
+import { AuthContext } from "./Auth/AuthContext";
+import { MaterialIcons } from "@expo/vector-icons";
 
 const BarcodeScanner = () => {
   const qrLock = useRef(false);
+  const { logout, user } = useContext(AuthContext);
   const [scannedText, setScannedText] = useState("");
   const [hasPermission, setHasPermission] = useState(null);
   const navigation = useNavigation();
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+  
 
   useEffect(() => {
     (async () => {
@@ -41,6 +47,28 @@ const BarcodeScanner = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.topBar}>
+        <TouchableOpacity
+          onPress={() => setDropdownVisible(!dropdownVisible)}
+          style={styles.userIconContainer}
+        >
+          <MaterialIcons name="account-circle" size={30} color="white" />
+        </TouchableOpacity>
+        <View>
+          <Text style={{fontSize: 12, color: 'white', textAlign: 'left'}}>Hello,</Text>
+          <Text style={{fontSize: 18, color: 'white', textAlign: 'left'}}>{user?.user_name}</Text>
+        </View>
+
+        {/* Dropdown Menu */}
+        {dropdownVisible && (
+          <View style={styles.dropdownMenu}>
+            <TouchableOpacity onPress={logout} style={styles.dropdownItem}>
+              <Text style={styles.dropdownText}>Logout</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      </View>
+
       <CameraView
         style={StyleSheet.absoluteFillObject}
         facing="back"
@@ -72,6 +100,48 @@ const BarcodeScanner = () => {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#000" },
+
+  topBar: {
+    position: "absolute",
+    top: 40,
+    left: 20,
+    zIndex: 2,
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 10,
+    alignItems: 'center'
+  },
+
+  userIconContainer: {
+    padding: 10,
+    backgroundColor: "rgba(255, 255, 255, 0.2)",
+    borderRadius: 50,
+  },
+
+  dropdownMenu: {
+    position: "absolute",
+    top: 55,
+    left: 0,
+    backgroundColor: "#333",
+    paddingVertical: 4,
+    paddingHorizontal: 15,
+    borderRadius: 8,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3.84,
+    elevation: 5,
+    width: 80,
+  },
+
+  dropdownItem: {
+    paddingVertical: 8,
+  },
+
+  dropdownText: {
+    color: "#fff",
+    fontSize: 16,
+  },
 
   centered: {
     flex: 1,
