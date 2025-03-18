@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.6)", // Dim background
+    backgroundColor: "rgba(0, 0, 0, 0.6)", 
   },
 
   instructionText: {
@@ -113,7 +113,6 @@ const styles = StyleSheet.create({
     position: "relative",
   },
 
-  // Animated Corners for better visibility
   cornerTopLeft: {
     position: "absolute",
     top: -2,
@@ -172,7 +171,7 @@ const styles = StyleSheet.create({
   scannedText: { color: "#fff", fontSize: 16, fontWeight: "bold", marginBottom: 5 },
   code: { color: "#fff", fontSize: 18, fontWeight: "600", marginBottom: 15 },
   button: {
-    backgroundColor: "#4CAF50",
+    backgroundColor: "#10B981",
     paddingVertical: 14,
     paddingHorizontal: 40,
     borderRadius: 8,
