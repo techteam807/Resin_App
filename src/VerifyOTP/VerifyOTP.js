@@ -107,7 +107,7 @@ import { AuthContext } from "../Auth/AuthContext";
   
         <View style={styles.buttonContainer}>
           <TouchableOpacity
-            style={styles.button}
+            style={[styles.button, loading && { backgroundColor: "#10B981" }]}
             onPress={handleVerifyOTP}
           >
             {loading ? <ActivityIndicator color="#fff" style={{ paddingVertical: 2 }} /> : <Text style={styles.buttonText}>Verify</Text>}
@@ -190,7 +190,7 @@ import { AuthContext } from "../Auth/AuthContext";
       paddingHorizontal: 20,
     },
     button: {
-      backgroundColor: "#4CAF50",
+      backgroundColor: "#10B981",
       paddingVertical: 12,
       paddingHorizontal: 40,
       borderRadius: 10,
@@ -220,7 +220,7 @@ import { AuthContext } from "../Auth/AuthContext";
     },
     signUpLink: {
       fontSize: 16,
-      color: "#4CAF50",
+      color: "#10B981",
       fontWeight: "bold",
     },
   });

@@ -19,7 +19,6 @@ const BarcodeScanner = () => {
   const [hasPermission, setHasPermission] = useState(null);
   const navigation = useNavigation();
   const [dropdownVisible, setDropdownVisible] = useState(false);
-  
 
   useEffect(() => {
     (async () => {
@@ -47,19 +46,22 @@ const BarcodeScanner = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.topBar}>
-        <TouchableOpacity
-          onPress={() => setDropdownVisible(!dropdownVisible)}
-          style={styles.userIconContainer}
-        >
-          <MaterialIcons name="account-circle" size={30} color="white" />
-        </TouchableOpacity>
-        <View>
-          <Text style={{fontSize: 12, color: 'white', textAlign: 'left'}}>Hello,</Text>
-          <Text style={{fontSize: 18, color: 'white', textAlign: 'left'}}>{user?.user_name}</Text>
+      <View style={styles.headerContainer}>
+        <View style={styles.headerLeft}>
+          <MaterialIcons name="account-circle" size={44} color="black" />
+          <View style={styles.userTextContainer}>
+            <Text style={styles.helloText}>Hello,</Text>
+            <Text style={styles.userName}>{user?.user_name}</Text>
+          </View>
         </View>
 
-        {/* Dropdown Menu */}
+        <TouchableOpacity
+          onPress={() => setDropdownVisible(!dropdownVisible)}
+          style={styles.dropdownToggle}
+        >
+          <MaterialIcons name="more-vert" size={28} color="black" />
+        </TouchableOpacity>
+
         {dropdownVisible && (
           <View style={styles.dropdownMenu}>
             <TouchableOpacity onPress={logout} style={styles.dropdownItem}>
@@ -68,7 +70,6 @@ const BarcodeScanner = () => {
           </View>
         )}
       </View>
-
       <CameraView
         style={StyleSheet.absoluteFillObject}
         facing="back"
@@ -83,8 +84,6 @@ const BarcodeScanner = () => {
           }
         }}
       />
-
-      {/* Transparent Overlay */}
       <View style={styles.overlay}>
         <Text style={styles.instructionText}>Scan Customer Barcode</Text>
         <View style={styles.scanBox}>
@@ -101,15 +100,42 @@ const BarcodeScanner = () => {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#000" },
 
-  topBar: {
-    position: "absolute",
-    top: 40,
-    left: 20,
-    zIndex: 2,
-    display: 'flex',
-    flexDirection: 'row',
-    gap: 10,
-    alignItems: 'center'
+  headerContainer: {
+    width: "100%",
+    paddingHorizontal: 20,
+    paddingTop: 35,
+    paddingBottom: 10,
+    backgroundColor: "#fff", 
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    zIndex: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "rgba(255,255,255,0.1)",
+  },
+
+  headerLeft: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+
+  userTextContainer: {
+    marginLeft: 10,
+  },
+
+  helloText: {
+    color: "black",
+    fontSize: 12,
+  },
+  userName: {
+    color: "black",
+    fontSize: 18,
+    fontWeight: "600",
+  },
+
+  dropdownToggle: {
+    padding: 8,
+    borderRadius: 50,
   },
 
   userIconContainer: {
@@ -120,20 +146,18 @@ const styles = StyleSheet.create({
 
   dropdownMenu: {
     position: "absolute",
-    top: 55,
-    left: 0,
+    top: 75,
+    right: 20,
     backgroundColor: "#333",
-    paddingVertical: 4,
-    paddingHorizontal: 15,
+    paddingVertical: 6,
+    paddingHorizontal: 14,
     borderRadius: 8,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 3.84,
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
     elevation: 5,
-    width: 80,
   },
-
   dropdownItem: {
     paddingVertical: 8,
   },

@@ -82,7 +82,7 @@ import {
       fontSize: 80,
     },
     button: {
-      backgroundColor: "#4CAF50",
+      backgroundColor: "#10B981",
       paddingVertical: 15,
       paddingHorizontal: 50,
       borderRadius: 10,

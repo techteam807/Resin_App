@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   button: {
-    backgroundColor: "#4CAF50",
+    backgroundColor: "#10B981",
     paddingVertical: 12,
     paddingHorizontal: 40,
     borderRadius: 10,
@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   disabledButton: {
-    backgroundColor: "#A5D6A7",
+    backgroundColor: "#10B981",
   },
   buttonText: {
     color: "#fff",
@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
   },
   signUpLink: {
     fontSize: 16,
-    color: "#4CAF50",
+    color: "#10B981",
     fontWeight: "bold",
   },
 });

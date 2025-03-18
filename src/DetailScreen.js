@@ -48,6 +48,7 @@ const DetailScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <Text style={styles.header}>🧾 Scan Customer Details</Text>
       <View style={styles.card}>
         <Text style={styles.title}>Scanned Code</Text>
         <Text style={styles.code}>{scannedData}</Text>
@@ -57,26 +58,34 @@ const DetailScreen = () => {
       {error ? <Text style={styles.error}>{error}</Text> : null}
 
       {productData && (
-        <View style={styles.detailsCard}>
-          <Text style={styles.detailTitle}>{productData.customer_name}</Text>
-          <Text style={styles.detailText}>Email: {productData.email}</Text>
-          <Text style={styles.detailText}>Mobile: {productData.mobile}</Text>
+        <View style={styles.productCard}>
+          <Text style={styles.customerName}>{productData.customer_name}</Text>
+          <View style={styles.infoRow}>
+            <Text style={styles.label}>Email:</Text>
+            <Text style={styles.value}>{productData.email}</Text>
+          </View>
+          <View style={styles.infoRow}>
+            <Text style={styles.label}>Mobile:</Text>
+            <Text style={styles.value}>{productData.mobile}</Text>
+          </View>
         </View>
       )}
 
-      <TouchableOpacity
-        style={styles.buttonPrimary}
-        onPress={() => navigation.navigate("ProductScanner", { scannedData })}
-      >
-        <Text style={styles.buttonText}>Open Product Scanner</Text>
-      </TouchableOpacity>
+      <View style={styles.buttonGroup}>
+        <TouchableOpacity
+          style={styles.primaryBtn}
+          onPress={() => navigation.navigate("ProductScanner", { scannedData })}
+        >
+          <Text style={styles.btnText}>Open Product Scanner</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.buttonSecondary}
-        onPress={() => navigation.navigate("BarcodeScanner")}
-      >
-        <Text style={styles.buttonText}>Scan Again</Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.secondaryBtn}
+          onPress={() => navigation.navigate("BarcodeScanner")}
+        >
+          <Text style={styles.btnText}>Scan Again</Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 };
@@ -86,82 +95,104 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#121212",
+    backgroundColor: "#F2F3F7",
     padding: 20,
+  },
+  header: {
+    fontSize: 26,
+    fontWeight: "700",
+    color: "#1A1A2E",
+    marginBottom: 24,
   },
   card: {
-    backgroundColor: "#1E1E1E",
+    backgroundColor: "#FFF",
+    borderRadius: 20,
     padding: 20,
-    borderRadius: 12,
-    shadowColor: "#000",
-    shadowOpacity: 0.2,
-    shadowOffset: { width: 0, height: 4 },
-    shadowRadius: 8,
-    elevation: 5,
-    width: "90%",
-    alignItems: "center",
+    width: "100%",
     marginBottom: 20,
+    shadowColor: "#000",
+    shadowOpacity: 0.08,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 12,
+    elevation: 6,
   },
   title: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#FFFFFF",
+    fontSize: 14,
+    color: "#7C7F94",
+    marginBottom: 6,
+    fontWeight: "600",
   },
   code: {
-    fontSize: 16,
-    color: "#0A84FF",
-    marginTop: 5,
+    fontSize: 18,
+    fontWeight: "700",
+    color: "#5E60CE",
   },
   error: {
-    color: "#FF453A",
+    color: "#DC2626",
     fontSize: 16,
     marginVertical: 10,
   },
-  detailsCard: {
-    backgroundColor: "#1E1E1E",
-    padding: 20,
-    borderRadius: 12,
-    shadowColor: "#000",
-    shadowOpacity: 0.2,
-    shadowOffset: { width: 0, height: 4 },
-    shadowRadius: 8,
-    elevation: 5,
-    width: "90%",
+  productCard: {
+    backgroundColor: "#FFF",
+    padding: 24,
+    borderRadius: 20,
+    width: "100%",
     marginBottom: 20,
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 12,
+    elevation: 6,
   },
-  detailTitle: {
+  customerName: {
     fontSize: 20,
-    fontWeight: "bold",
-    color: "#FFFFFF",
-    marginBottom: 10,
+    fontWeight: "700",
+    color: "#1A1A2E",
+    marginBottom: 16,
   },
-  detailText: {
+  infoRow: {
+    marginBottom: 8,
+  },
+  label: {
     fontSize: 16,
-    color: "#BBBBBB",
-    marginVertical: 2,
+    color: "#7C7F94",
   },
-  buttonPrimary: {
-    backgroundColor: "#4CAF50",
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 8,
-    marginTop: 10,
-    width: "90%",
-    alignItems: "center",
-  },
-  buttonSecondary: {
-    backgroundColor: "#FF453A",
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 8,
-    marginTop: 10,
-    width: "90%",
-    alignItems: "center",
-  },
-  buttonText: {
-    color: "#FFFFFF",
+  value: {
     fontSize: 16,
-    fontWeight: "bold",
+    color: "#1A1A2E",
+    fontWeight: "600",
+  },
+  buttonGroup: {
+    width: "100%",
+    marginTop: 10,
+  },
+  primaryBtn: {
+    backgroundColor: "#10B981",
+    paddingVertical: 16,
+    borderRadius: 14,
+    alignItems: "center",
+    marginBottom: 14,
+    shadowColor: "#5E60CE",
+    shadowOpacity: 0.3,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 10,
+    elevation: 8,
+  },
+  secondaryBtn: {
+    backgroundColor: "#EF4444",
+    paddingVertical: 16,
+    borderRadius: 14,
+    alignItems: "center",
+    shadowColor: "#FF6584",
+    shadowOpacity: 0.3,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 10,
+    elevation: 8,
+  },
+  btnText: {
+    color: "#FFF",
+    fontSize: 16,
+    fontWeight: "700",
   },
 });
 

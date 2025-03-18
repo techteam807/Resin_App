@@ -102,7 +102,7 @@ const Sign_up = () => {
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-          style={[styles.button, loading && { backgroundColor: "#A5D6A7" }]} 
+          style={[styles.button, loading && { backgroundColor: "#10B981" }]} 
           onPress={handleSubmit}
           disabled={loading}
         >
@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   button: {
-    backgroundColor: "#4CAF50",
+    backgroundColor: "#10B981",
     paddingVertical: 12,
     paddingHorizontal: 40,
     borderRadius: 10,
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
   },
   signUpLink: {
     fontSize: 16,
-    color: "#4CAF50",
+    color: "#10B981",
     fontWeight: "bold",
   },
 });
