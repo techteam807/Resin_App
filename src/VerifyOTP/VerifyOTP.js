@@ -41,7 +41,7 @@ import { AuthContext } from "../Auth/AuthContext";
           nextScreen = "SignUpSuccess";  
         } else if (from === "signin") {
           apiUrl = "https://resion-backend.vercel.app/users/verifySignIn";  
-          nextScreen = "BarcodeScanner"; 
+          nextScreen = "HomeScreen"; 
         } else {
           Alert.alert("Error", "Invalid request");
           return;

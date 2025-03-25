@@ -24,9 +24,9 @@ const SuccessProduct = ({ navigation }) => {
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("BarcodeScanner")}
+          onPress={() => navigation.navigate("HomeScreen")}
         >
-          <Text style={styles.buttonText}>Scan Customer</Text>
+          <Text style={styles.buttonText}>Home</Text>
         </TouchableOpacity>
       </View>
     </View>

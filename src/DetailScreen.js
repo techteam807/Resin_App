@@ -50,7 +50,7 @@ const DetailScreen = () => {
     <SafeAreaView style={styles.container}>
       <Text style={styles.header}>🧾 Scan Customer Details</Text>
       <View style={styles.card}>
-        <Text style={styles.title}>Scanned Code</Text>
+        <Text style={styles.title}>Customer Code</Text>
         <Text style={styles.code}>{scannedData}</Text>
       </View>
 
@@ -72,13 +72,14 @@ const DetailScreen = () => {
       )}
 
       <View style={styles.buttonGroup}>
+        {!error &&
         <TouchableOpacity
           style={styles.primaryBtn}
           onPress={() => navigation.navigate("ProductScanner", { scannedData })}
         >
           <Text style={styles.btnText}>Open Product Scanner</Text>
         </TouchableOpacity>
-
+        }
         <TouchableOpacity
           style={styles.secondaryBtn}
           onPress={() => navigation.navigate("BarcodeScanner")}

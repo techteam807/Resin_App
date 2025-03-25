@@ -8,11 +8,9 @@ import {
 } from "react-native";
 import { Camera, CameraView } from "expo-camera";
 import { useNavigation } from "@react-navigation/native";
-import { AuthContext } from "./Auth/AuthContext";
 
-const BarcodeScanner = () => {
+const WarehouseScanner = () => {
   const qrLock = useRef(false);
-  const { logout, user } = useContext(AuthContext);
   const [scannedText, setScannedText] = useState("");
   const [hasPermission, setHasPermission] = useState(null);
   const navigation = useNavigation();
@@ -52,13 +50,13 @@ const BarcodeScanner = () => {
             setScannedText(data);
             setTimeout(() => {
               qrLock.current = false;
-              navigation.navigate("DetailScreen", { scannedData: data });
+              navigation.navigate("WarehouseDatailScreen", { scannedData: data });
             }, 1500);
           }
         }}
       />
       <View style={styles.overlay}>
-        <Text style={styles.instructionText}>Scan Customer Barcode</Text>
+        <Text style={styles.instructionText}>Scan Warehouse Barcode</Text>
         <View style={styles.scanBox}>
           <View style={styles.cornerTopLeft} />
           <View style={styles.cornerTopRight} />
@@ -204,4 +202,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BarcodeScanner;
+export default WarehouseScanner;
