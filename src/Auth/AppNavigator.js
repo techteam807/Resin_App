@@ -8,11 +8,13 @@ import HomeScreen from "../Home/HomeScreen";
 import WarehouseScanner from "../Warehouse/WarehouseScanner";
 import WarehouseDatailScreen from "../Warehouse/WarehouseDatailScreen";
 import WarehouseProductScanner from "../Warehouse/WarehouseProductScanner";
+import Map from "../Map/Map";
 
 const Stack = createStackNavigator();
 
 const AppNavigator = () => (
   <Stack.Navigator screenOptions={{ headerShown: false }}>
+   
     <Stack.Screen name="HomeScreen" component={HomeScreen} />
     <Stack.Screen name="BarcodeScanner" component={BarcodeScanner} />
     <Stack.Screen name="DetailScreen" component={DetailScreen} />
@@ -21,6 +23,7 @@ const AppNavigator = () => (
     <Stack.Screen name="WarehouseScanner" component={WarehouseScanner} />
     <Stack.Screen name="WarehouseDatailScreen" component={WarehouseDatailScreen} />
     <Stack.Screen name="WarehouseProductScanner" component={WarehouseProductScanner} />
+    <Stack.Screen name="Map" component={Map} />
   </Stack.Navigator>
 );
 

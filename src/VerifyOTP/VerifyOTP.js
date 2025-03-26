@@ -61,7 +61,7 @@ import { AuthContext } from "../Auth/AuthContext";
           const data = await response.json();
           
           if (response.ok) {
-            Alert.alert("Success", "OTP Verified!");
+            // Alert.alert("Success", "OTP Verified!");
             if (from === "signin") {
               login(data.data.token, data.data.user);
             }

@@ -117,13 +117,13 @@ const styles = StyleSheet.create({
     maxWidth: "60%",
   },
   welcomeText: {
-    fontSize: 15,
+    fontSize: 13,
     fontWeight: "400",
     color: "#64748b",
     fontFamily: "outfit",
   },
   companyText: {
-    fontSize: 20,
+    fontSize: 17,
     fontFamily: "outfit-bold",
     flexShrink: 1,
     color: "#0f172a",
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
   cardContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 40,
+    marginTop: 50,
     paddingHorizontal: 20,
     gap: 15,
   },

@@ -88,11 +88,31 @@ const WarehouseProductScanner = () => {
         if (result?.status === true) {
           navigation.navigate("SuccessProduct");
         } else {
-          Alert.alert(
-            "Submission Failed",
-            result?.message || result?.error || "Unknown error"
-          );
+          let errorMessage = "Unknown error";
+        
+          if (result?.message) {
+            const errors = [];
+            if (result.message.notFound) {
+              errors.push(`• Not Found: ${result.message.notFound}`);
+            }
+            if (result.message.alreadyNew) {
+              errors.push(`• Already New: ${result.message.alreadyNew}`);
+            }
+            if (result.message.inUse) {
+              errors.push(`• In Use: ${result.message.inUse}`);
+            }
+            if (result.message.deleted) {
+              errors.push(`• Deleted: ${result.message.deleted}`);
+            }
+        
+            if (errors.length > 0) {
+              errorMessage = errors.join("\n\n"); // Adds spacing between each message
+            }
+          }
+        
+          Alert.alert("🚨 Submission Failed", errorMessage || "Unknown error");
         }
+        
       } catch (error) {
         Alert.alert("Error", "Failed to submit products. Please try again.");
       } finally {
