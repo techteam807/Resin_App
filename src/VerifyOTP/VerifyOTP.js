@@ -26,11 +26,22 @@ import { AuthContext } from "../Auth/AuthContext";
     const { from, country_code, mobile_number } = route.params || {};
     const [otp, setOtp] = useState("");
     const [loading, setLoading] = useState(false);
-    
+    const [error, setError] = useState("");
+
+    const validateOtp = (value) => {
+      if (!value) {
+        setError("OTP is required");
+      } else if (value.length !== 6 || !/^\d{6}$/.test(value)) {
+        setError("OTP must be a 6-digit number");
+      } else {
+        setError("");
+      }
+      setOtp(value);
+    };
 
     const handleVerifyOTP = async () => {
-        if (!otp) {
-          Alert.alert("Error", "Please enter OTP");
+        if (error || !otp) {
+          setError("Please enter a valid OTP");
           return;
         }
         let apiUrl = "";
@@ -97,12 +108,14 @@ import { AuthContext } from "../Auth/AuthContext";
               <TextInput
                 placeholder="Enter OTP"
                 style={styles.textInput}
-                keyboardType="phone-pad"
+                keyboardType="number-pad"
                 value={otp}
-                onChangeText={setOtp}
+                onChangeText={validateOtp}
+                maxLength={6}
               />
             </View>
           </View>
+          {error ? <Text style={styles.errorText}>{error}</Text> : null}
         </View>
   
         <View style={styles.buttonContainer}>
@@ -177,6 +190,14 @@ import { AuthContext } from "../Auth/AuthContext";
     icon: {
       marginLeft: 5,
       marginRight: 8,
+    },
+    errorText: {
+      color: "red",
+      fontSize: 9,
+      // marginTop: 4,
+      position: 'absolute',
+      right: 20,
+      bottom: -13,
     },
     textInput: {
       flex: 1,

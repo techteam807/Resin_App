@@ -24,12 +24,31 @@ const Sign_up = () => {
   const [name, setName] = useState("");
   const [country, setCountry] = useState("+91");
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({});
+
+  const validate = () => {
+    let valid = true;
+    let newErrors = {};
+
+    if (!name.trim()) {
+      newErrors.name = "Name is required";
+      valid = false;
+    }
+
+    if (!mobileNumber.trim()) {
+      newErrors.mobileNumber = "Mobile number is required";
+      valid = false;
+    } else if (!/^\d{10}$/.test(mobileNumber)) {
+      newErrors.mobileNumber = "Enter a valid 10-digit number";
+      valid = false;
+    }
+
+    setErrors(newErrors);
+    return valid;
+  };
 
   const handleSubmit = async () => {
-    if (!name.trim() || !mobileNumber.trim()) {
-      Alert.alert("Error", "Please fill in all fields.");
-      return;
-    }
+    if (!validate()) return;
 
     setLoading(true);
     try {
@@ -40,24 +59,30 @@ const Sign_up = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ user_name: name, mobile_number: mobileNumber, country_code: country }),
+          body: JSON.stringify({
+            user_name: name,
+            mobile_number: mobileNumber,
+            country_code: country,
+          }),
         }
       );
 
       const result = await response.json();
-      
+
       if (response.ok) {
-        Alert.alert("Success", "Sign-up successful! Redirecting to OTP verification.");
-        navigation.navigate("VerifyOTP", {
-          from: "signup",
-          country_code: country,
-          mobile_number: mobileNumber,
-        });
+        Alert.alert("Success", "OTP sent successfully. Please check your WhatsApp", [
+          { text: "OK", onPress: () => navigation.navigate("VerifyOTP", {
+              from: "signup",
+              country_code: country,
+              mobile_number: mobileNumber,
+            })
+          }
+        ]);
       } else {
-        Alert.alert("Error", result.message || "Failed to sign up.");
+        Alert.alert("Error", result.message || "Failed to sign Up.");
       }
     } catch (error) {
-      Alert.alert("Error", "Network error. Please try again.");
+     Alert.alert("Error", "Network error. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -83,6 +108,7 @@ const Sign_up = () => {
               onChangeText={setName}
             />
           </View>
+          {errors.name && <Text style={styles.errorText}>{errors.name}</Text>}
         </View>
         <View style={styles.fieldset}>
           <Text style={styles.legend}>Mobile Number</Text>
@@ -97,16 +123,21 @@ const Sign_up = () => {
               onChangeText={setMobileNumber}
             />
           </View>
+          {errors.mobileNumber && <Text style={styles.errorText}>{errors.mobileNumber}</Text>}
         </View>
       </View>
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-          style={[styles.button, loading && { backgroundColor: "#10B981" }]} 
+          style={[styles.button, loading && { backgroundColor: "#10B981" }]}
           onPress={handleSubmit}
           disabled={loading}
         >
-          {loading ? <ActivityIndicator color="#fff" style={{ paddingVertical: 2 }} /> : <Text style={styles.buttonText}>Sign Up</Text>}
+          {loading ? (
+            <ActivityIndicator color="#fff" style={{ paddingVertical: 2 }} />
+          ) : (
+            <Text style={styles.buttonText}>Sign Up</Text>
+          )}
         </TouchableOpacity>
       </View>
 
@@ -156,7 +187,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 8,
     position: "relative",
-    marginBottom: 15,
+    marginBottom: 22,
   },
   legend: {
     position: "absolute",
@@ -184,6 +215,14 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     paddingVertical: 8,
+  },
+  errorText: {
+    color: "red",
+    fontSize: 9,
+    // marginTop: 4,
+    position: 'absolute',
+    right: 2,
+    bottom: -13,
   },
   buttonContainer: {
     width: "100%",

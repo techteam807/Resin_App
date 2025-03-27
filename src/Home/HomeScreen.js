@@ -70,6 +70,8 @@ const HomeScreen = () => {
               </View>
             </TouchableWithoutFeedback>
           )}
+        </View>
+        <View style={styles.cardWrapper}>
           <View style={styles.cardContainer}>
             <TouchableOpacity
               style={styles.card}
@@ -78,7 +80,9 @@ const HomeScreen = () => {
               <MaterialIcons name="qr-code-scanner" size={32} color="#3b82f6" />
               <Text style={styles.cardText}>Scan Customer</Text>
             </TouchableOpacity>
-
+          </View>
+          <View style={styles.cardContainer}>
+            {" "}
             <TouchableOpacity
               style={styles.card}
               onPress={() => navigation.navigate("WarehouseScanner")}
@@ -164,10 +168,14 @@ const styles = StyleSheet.create({
     color: "#FF5C5C",
     fontSize: 16,
   },
+  cardWrapper: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
   cardContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 50,
+    marginTop: 40,
     paddingHorizontal: 20,
     gap: 15,
   },

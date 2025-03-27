@@ -23,12 +23,26 @@ const Sign_in = () => {
   const [mobileNumber, setMobileNumber] = useState("");
   const [country, setCountry] = useState("+91");
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({});
+
+  const validate = () => {
+    let valid = true;
+    let newErrors = {};
+
+    if (!mobileNumber.trim()) {
+      newErrors.mobileNumber = "Mobile number is required";
+      valid = false;
+    } else if (!/^\d{10}$/.test(mobileNumber)) {
+      newErrors.mobileNumber = "Enter a valid 10-digit number";
+      valid = false;
+    }
+
+    setErrors(newErrors);
+    return valid;
+  };
 
   const handleSubmit = async () => {
-    if (!mobileNumber) {
-      Alert.alert("Error", "Please fill in Mobile number.");
-      return;
-    }
+    if (!validate()) return;
 
     setLoading(true);
     try {
@@ -49,15 +63,14 @@ const Sign_in = () => {
       const result = await response.json();
 
       if (response.ok) {
-        Alert.alert(
-          "Success",
-          "Sign-in successful! Redirecting to OTP verification."
-        );
-        navigation.navigate("VerifyOTP", {
-          from: "signin",
-          country_code: country,
-          mobile_number: mobileNumber,
-        });
+        Alert.alert("Success", "OTP sent successfully. Please check your WhatsApp", [
+          { text: "OK", onPress: () => navigation.navigate("VerifyOTP", {
+              from: "signin",
+              country_code: country,
+              mobile_number: mobileNumber,
+            })
+          }
+        ]);
       } else {
         Alert.alert("Error", result.message || "Failed to sign in.");
       }
@@ -89,7 +102,13 @@ const Sign_in = () => {
               onChangeText={setMobileNumber}
             />
           </View>
+          {errors.mobileNumber && (
+            <Text style={styles.errorText}>{errors.mobileNumber}</Text>
+          )}
         </View>
+        {errors.general && (
+          <Text style={styles.errorText}>{errors.general}</Text>
+        )}
       </View>
 
       <View style={styles.buttonContainer}>
@@ -99,7 +118,11 @@ const Sign_in = () => {
           disabled={loading}
         >
           {loading ? (
-            <ActivityIndicator size="small" color="#fff" style={{ paddingVertical: 2 }} />
+            <ActivityIndicator
+              size="small"
+              color="#fff"
+              style={{ paddingVertical: 2 }}
+            />
           ) : (
             <Text style={styles.buttonText}>Sign In</Text>
           )}
@@ -179,6 +202,14 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     paddingVertical: 8,
+  },
+  errorText: {
+    color: "red",
+    fontSize: 9,
+    // marginTop: 4,
+    position: 'absolute',
+    right: 2,
+    bottom: -13,
   },
   buttonContainer: {
     width: "100%",

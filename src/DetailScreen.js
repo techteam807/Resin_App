@@ -33,6 +33,8 @@ const DetailScreen = () => {
         `https://resion-backend.vercel.app/customers/code?customer_code=${barcode}`
       );
       const data = await response.json();
+      console.log("data",data.data);
+      
 
       if (response.ok) {
         setProductData(data?.data);
@@ -60,14 +62,28 @@ const DetailScreen = () => {
       {productData && (
         <View style={styles.productCard}>
           <Text style={styles.customerName}>{productData.customer_name}</Text>
+          {productData.email && 
           <View style={styles.infoRow}>
             <Text style={styles.label}>Email:</Text>
             <Text style={styles.value}>{productData.email}</Text>
           </View>
+          }
+          {productData.mobile &&
           <View style={styles.infoRow}>
             <Text style={styles.label}>Mobile:</Text>
             <Text style={styles.value}>{productData.mobile}</Text>
           </View>
+          }
+          {productData.products && productData.products.length > 0 && (
+            <View style={styles.infoRow}>
+              <Text style={styles.label}>Products:</Text>
+              {productData.products.map((product, index) => (
+                <Text key={index} style={styles.value}>
+                  {product.productCode}
+                </Text>
+              ))}
+            </View>
+          )}
         </View>
       )}
 
