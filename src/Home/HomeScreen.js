@@ -102,12 +102,12 @@ export default HomeScreen;
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: "#F2F3F7",
   },
   headerContainer: {
     backgroundColor: "white",
     paddingHorizontal: 20,
-    paddingVertical: 25,
+    paddingVertical: 12,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: 40,
-    paddingHorizontal: 20,
+    paddingHorizontal: 35,
     gap: 15,
   },
   card: {
