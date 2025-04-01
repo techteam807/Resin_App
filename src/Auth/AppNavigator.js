@@ -15,7 +15,7 @@ const Stack = createStackNavigator();
 
 const AppNavigator = () => (
   <>
-  <StatusBar backgroundColor="white" barStyle="dark-content" />
+    <StatusBar backgroundColor="white" barStyle="dark-content" />
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
       <Stack.Screen name="BarcodeScanner" component={BarcodeScanner} />

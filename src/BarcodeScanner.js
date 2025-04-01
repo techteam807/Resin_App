@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, useContext } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -8,11 +8,9 @@ import {
 } from "react-native";
 import { Camera, CameraView } from "expo-camera";
 import { useNavigation } from "@react-navigation/native";
-import { AuthContext } from "./Auth/AuthContext";
 
 const BarcodeScanner = () => {
   const qrLock = useRef(false);
-  const { logout, user } = useContext(AuthContext);
   const [scannedText, setScannedText] = useState("");
   const [hasPermission, setHasPermission] = useState(null);
   const navigation = useNavigation();
@@ -138,7 +136,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.6)", // Dim background
+    backgroundColor: "rgba(0, 0, 0, 0.3)", 
   },
 
   instructionText: {

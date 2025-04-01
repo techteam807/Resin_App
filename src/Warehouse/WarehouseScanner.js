@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.6)", // Dim background
+    backgroundColor: "rgba(0, 0, 0, 0.3)",
   },
 
   instructionText: {

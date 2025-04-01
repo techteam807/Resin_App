@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   SafeAreaView,
   Text,
@@ -7,7 +7,7 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from "react-native";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 
 const DetailScreen = () => {
   const navigation = useNavigation();
@@ -18,11 +18,13 @@ const DetailScreen = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    if (scannedData) {
-      fetchProductDetails(scannedData);
-    }
-  }, [scannedData]);
+  useFocusEffect(
+    useCallback(() => {
+      if (scannedData) {
+        fetchProductDetails(scannedData);
+      }
+    }, [scannedData])
+  );
 
   const fetchProductDetails = async (barcode) => {
     setLoading(true);
@@ -30,7 +32,7 @@ const DetailScreen = () => {
 
     try {
       const response = await fetch(
-        `https://resion-backend.vercel.app/customers/code?customer_code=${barcode}`
+        `https://ression-backend-new.vercel.app/customers/code?customer_code=${barcode}`
       );
       const data = await response.json();
       console.log("data",data.data);
@@ -47,6 +49,9 @@ const DetailScreen = () => {
 
     setLoading(false);
   };
+
+  console.log("prodata",productData?.cartridgeNum);
+  
 
   return (
     <SafeAreaView style={styles.container}>
@@ -84,6 +89,7 @@ const DetailScreen = () => {
               ))}
             </View>
           )}
+         
         </View>
       )}
 
@@ -91,7 +97,7 @@ const DetailScreen = () => {
         {!error &&
         <TouchableOpacity
           style={styles.primaryBtn}
-          onPress={() => navigation.navigate("ProductScanner", { scannedData })}
+          onPress={() => navigation.navigate("ProductScanner", { scannedData,cartridgeNum: productData?.cartridgeNum || 0  })}
         >
           <Text style={styles.btnText}>Open Product Scanner</Text>
         </TouchableOpacity>

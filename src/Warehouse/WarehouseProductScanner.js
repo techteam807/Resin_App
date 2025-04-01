@@ -71,7 +71,7 @@ const WarehouseProductScanner = () => {
       try {
         setLoading(true);
         const response = await fetch(
-          "https://resion-backend.vercel.app/wareHouse/products",
+          "https://ression-backend-new.vercel.app/wareHouse/products",
           {
             method: "POST",
             headers: {
@@ -106,7 +106,7 @@ const WarehouseProductScanner = () => {
             }
         
             if (errors.length > 0) {
-              errorMessage = errors.join("\n\n"); // Adds spacing between each message
+              errorMessage = errors.join("\n\n"); 
             }
           }
         
@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.4)",
+    backgroundColor: "rgba(0, 0, 0, 0.3)",
     paddingHorizontal: 30,
   },
 

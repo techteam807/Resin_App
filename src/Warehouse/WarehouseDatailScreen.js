@@ -31,7 +31,7 @@ const WarehouseDatailScreen = () => {
 
     try {
       const response = await fetch(
-        `https://resion-backend.vercel.app/wareHouse/code?wareHouse_code=${barcode}`
+        `https://ression-backend-new.vercel.app/wareHouse/code?wareHouse_code=${barcode}`
       );
       const json = await response.json();
 
