@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
+import { API_URL } from '@env'
 
 const DetailScreen = () => {
   const navigation = useNavigation();
@@ -32,7 +33,7 @@ const DetailScreen = () => {
 
     try {
       const response = await fetch(
-        `https://ression-backend-new.vercel.app/customers/code?customer_code=${barcode}`
+        `${API_URL}/customers/code?customer_code=${barcode}`
       );
       const data = await response.json();
       console.log("data",data.data);
@@ -49,8 +50,6 @@ const DetailScreen = () => {
 
     setLoading(false);
   };
-
-  console.log("prodata",productData?.cartridgeNum);
   
 
   return (

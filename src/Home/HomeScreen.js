@@ -1,7 +1,6 @@
 import {
   View,
   Text,
-  ScrollView,
   StyleSheet,
   Image,
   TouchableOpacity,
@@ -82,7 +81,6 @@ const HomeScreen = () => {
             </TouchableOpacity>
           </View>
           <View style={styles.cardContainer}>
-            {" "}
             <TouchableOpacity
               style={styles.card}
               onPress={() => navigation.navigate("WarehouseScanner")}
@@ -144,11 +142,12 @@ const styles = StyleSheet.create({
   },
   dropdownToggle: {
     padding: 8,
-    borderRadius: 50,
+    borderRadius: 60,
+    backgroundColor: "#F1F5F9",
   },
   dropdownMenu: {
     position: "absolute",
-    top: 100,
+    top: 80,
     right: 30,
     backgroundColor: "#fff",
     paddingVertical: 6,

@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { API_URL } from "@env";
 
 const WarehouseDatailScreen = () => {
   const navigation = useNavigation();
@@ -31,7 +32,7 @@ const WarehouseDatailScreen = () => {
 
     try {
       const response = await fetch(
-        `https://ression-backend-new.vercel.app/wareHouse/code?wareHouse_code=${barcode}`
+        `${API_URL}/wareHouse/code?wareHouse_code=${barcode}`
       );
       const json = await response.json();
 

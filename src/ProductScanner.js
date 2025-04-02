@@ -14,6 +14,7 @@ import { Camera, CameraView } from "expo-camera";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 const { width, height } = Dimensions.get("window");
+import { API_URL } from "@env";
 
 const ProductScanner = () => {
   const qrLock = useRef(false);
@@ -80,7 +81,7 @@ const ProductScanner = () => {
     try {
       setLoading(true);
       const response = await fetch(
-        `https://ression-backend-new.vercel.app/customers/manageProducts`,
+        `${API_URL}/customers/manageProducts`,
         {
           method: "POST",
           headers: {

@@ -12,6 +12,7 @@ import {
 import { Camera, CameraView } from "expo-camera";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
+import { API_URL } from "@env";
 
 const WarehouseProductScanner = () => {
   const qrLock = useRef(false);
@@ -71,7 +72,7 @@ const WarehouseProductScanner = () => {
       try {
         setLoading(true);
         const response = await fetch(
-          "https://ression-backend-new.vercel.app/wareHouse/products",
+          `${API_URL}/wareHouse/products`,
           {
             method: "POST",
             headers: {
