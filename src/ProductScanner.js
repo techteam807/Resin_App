@@ -23,8 +23,10 @@ const ProductScanner = () => {
   const [hasPermission, setHasPermission] = useState(null);
   const route = useRoute();
   const scannedData = route.params?.scannedData || "No Data";
-  const cartridgeNum = route.params?.cartridgeNum ?? 0;
+  const cartridgeNum = route.params?.cartridgeNum || 1;
   const navigation = useNavigation();
+  console.log("cartridgeNum", cartridgeNum);
+  
 
   useEffect(() => {
     (async () => {

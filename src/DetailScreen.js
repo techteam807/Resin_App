@@ -18,6 +18,8 @@ const DetailScreen = () => {
   const [productData, setProductData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  console.log("productData", productData);
+  
 
   useFocusEffect(
     useCallback(() => {
@@ -96,7 +98,7 @@ const DetailScreen = () => {
         {!error &&
         <TouchableOpacity
           style={styles.primaryBtn}
-          onPress={() => navigation.navigate("ProductScanner", { scannedData,cartridgeNum: productData?.cartridgeNum || 0  })}
+          onPress={() => navigation.navigate("ProductScanner", { scannedData, cartridgeNum: productData?.cartridgeNum || 1 })}
         >
           <Text style={styles.btnText}>Open Product Scanner</Text>
         </TouchableOpacity>
