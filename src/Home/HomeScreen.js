@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../Auth/AuthContext";
-import logo from "../../assets/logomain2.png";
+import logo from "../../assets/BetterwaterTM_Black.png";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
@@ -35,8 +35,8 @@ const HomeScreen = () => {
               <Image
                 source={logo}
                 style={{
-                  height: 23,
-                  width: 120,
+                  height: 24,
+                  width: 130,
                   backgroundColor: "white",
                   marginTop: 8,
                 }}

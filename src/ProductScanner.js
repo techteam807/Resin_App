@@ -179,7 +179,7 @@ const ProductScanner = () => {
         onBarcodeScanned={handleBarcodeScanned}
       />
       <View style={styles.overlay}>
-        <Text style={styles.instructionText}>Scan Product Barcode</Text>
+        <Text style={styles.instructionText}>Scan Product Barcode (Limit: {cartridgeNum})</Text>
         <View style={styles.scanBox}>
           <View style={styles.cornerTopLeft} />
           <View style={styles.cornerTopRight} />

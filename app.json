@@ -2,13 +2,13 @@
   "expo": {
     "name": "Resin Scanner",
     "slug": "BarcodeScan-App",
-    "version": "1.0.6",
+    "version": "1.0.9",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./assets/BW_Display_Pictures.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -16,9 +16,9 @@
       "supportsTablet": true
     },
     "android": {
-      "versionCode": 6,
+      "versionCode": 9,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/BW_Display_Pictures.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.techteam807.BarcodeScanApp",
