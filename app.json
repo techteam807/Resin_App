@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "Resin Scanner",
+    "name": "Better Water",
     "slug": "BarcodeScan-App",
-    "version": "1.0.9",
+    "version": "1.0.10",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -16,9 +16,9 @@
       "supportsTablet": true
     },
     "android": {
-      "versionCode": 9,
+      "versionCode": 10,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/BW_Display_Pictures.png",
+        "foregroundImage": "./assets/batter_water.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.techteam807.BarcodeScanApp",
