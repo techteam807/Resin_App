@@ -18,7 +18,7 @@ const DetailScreen = () => {
   const [productData, setProductData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  console.log("productData", productData);
+  // console.log("productData", productData);
   
 
   useFocusEffect(

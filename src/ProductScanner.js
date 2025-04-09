@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -15,6 +15,8 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 const { width, height } = Dimensions.get("window");
 import { API_URL } from "@env";
+import { AuthContext } from "./Auth/AuthContext";
+import { Ionicons } from "@expo/vector-icons";
 
 const ProductScanner = () => {
   const qrLock = useRef(false);
@@ -25,7 +27,8 @@ const ProductScanner = () => {
   const scannedData = route.params?.scannedData || "No Data";
   const cartridgeNum = route.params?.cartridgeNum || 1;
   const navigation = useNavigation();
-  console.log("cartridgeNum", cartridgeNum);
+  const { user } = useContext(AuthContext);
+  // console.log("user", user?._id);
   
 
   useEffect(() => {
@@ -34,42 +37,6 @@ const ProductScanner = () => {
       setHasPermission(status === "granted");
     })();
   }, []);
-
-  // const handleSubmit = async () => {
-  //   if (scannedText.length < 2) {
-  //     Alert.alert(
-  //       "𝗠𝗜𝗡𝗜𝗠𝗨𝗠 𝗥𝗘𝗤𝗨𝗜𝗥𝗘𝗗: 𝟮",
-  //       "Please scan at least one barcode before submitting."
-  //     );
-  //     return;
-  //   }
-
-  //     try {
-  //       setLoading(true);
-  //       const response = await fetch(
-  //         `https://resion-backend.vercel.app/customers/manageProducts?customer_code=${scannedData}`,
-  //         {
-  //           method: "POST",
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //           },
-  //           body: JSON.stringify({ product_code: scannedText }),
-  //         }
-  //       );
-
-  //       const result = await response.json();
-
-  //       if (response.ok) {
-  //         navigation.navigate("SuccessProduct");
-  //       } else {
-  //         Alert.alert("Error", result.error || "Failed to submit product.");
-  //       }
-  //     } catch (error) {
-  //       Alert.alert("Error", "Network error. Please try again.");
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  // };
 
   const handleSubmit = async () => {
     if (scannedText.length !== cartridgeNum) {
@@ -92,13 +59,14 @@ const ProductScanner = () => {
           body: JSON.stringify({
             Product_Codes: scannedText,
             customer_code: scannedData,
+            userId: user?._id,
           }),
         }
       );
 
       const result = await response.json();
 
-      console.log("resulktt", result);
+      // console.log("resulktt", result);
 
       if (result?.status === true) {
         navigation.navigate("SuccessProduct");
@@ -157,7 +125,11 @@ const ProductScanner = () => {
 
       setScannedText((prev) => {
         if (prev.includes(data)) return prev; 
-        if (prev.length >= cartridgeNum) return prev; 
+        // if (prev.length >= cartridgeNum) return prev;
+        if (prev.length >= cartridgeNum) {
+            Alert.alert("Limit Reached", `You can scan only ${cartridgeNum} items.`);
+          return prev;
+        } 
         return [...prev, data];
       });
 
@@ -179,6 +151,9 @@ const ProductScanner = () => {
         onBarcodeScanned={handleBarcodeScanned}
       />
       <View style={styles.overlay}>
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+        <Ionicons name="arrow-back" size={25} color="#fff" />
+      </TouchableOpacity>
         <Text style={styles.instructionText}>Scan Product Barcode (Limit: {cartridgeNum})</Text>
         <View style={styles.scanBox}>
           <View style={styles.cornerTopLeft} />
@@ -334,6 +309,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "700",
     textAlign: "center",
+  },
+  backButton: {
+    position: "absolute",
+    top: 10,
+    left: 10,
+    zIndex: 10,
+    padding: 10,
+    backgroundColor: "rgba(0,0,0,0.5)",
+    borderRadius: 25,
   },
 });
 

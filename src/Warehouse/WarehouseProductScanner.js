@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useContext } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -13,6 +13,8 @@ import { Camera, CameraView } from "expo-camera";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 import { API_URL } from "@env";
+import { AuthContext } from "../Auth/AuthContext";
+import { Ionicons } from "@expo/vector-icons";
 
 const WarehouseProductScanner = () => {
   const qrLock = useRef(false);
@@ -22,7 +24,7 @@ const WarehouseProductScanner = () => {
   const [loading, setLoading] = useState(false);
   const route = useRoute();
   const scannedData = route.params?.scannedData || "No Data";
-  console.log("sdfsjhf", scannedData);
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     (async () => {
@@ -78,7 +80,7 @@ const WarehouseProductScanner = () => {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ Product_Codes: scannedDataList, wareHouse_code: scannedData }),
+            body: JSON.stringify({ Product_Codes: scannedDataList, wareHouse_code: scannedData, userId: user?._id }),
           }
         );
 
@@ -134,6 +136,9 @@ const WarehouseProductScanner = () => {
         onBarcodeScanned={handleBarcodeScanned}
       />
       <View style={styles.overlay}>
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+        <Ionicons name="arrow-back" size={25} color="#fff" />
+      </TouchableOpacity>
         <Text style={styles.instructionText}>Warehouse Product Scanner</Text>
         <View style={styles.scanBox}>
           <View style={styles.cornerTopLeft} />
@@ -311,5 +316,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "700",
     textAlign: "center",
+  },
+  backButton: {
+    position: "absolute",
+    top: 10,
+    left: 10,
+    zIndex: 10,
+    padding: 10,
+    backgroundColor: "rgba(0,0,0,0.5)",
+    borderRadius: 25,
   },
 });

@@ -6,21 +6,21 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Dimensions,
+  ImageBackground,
 } from "react-native";
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../Auth/AuthContext";
 import logo from "../../assets/BetterwaterTM_Black.png";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import bgImage from "../../assets/Add a heading (3).png";
 
 const { width } = Dimensions.get("window");
-const { height } = Dimensions.get("window");
 
 const HomeScreen = () => {
   const navigation = useNavigation();
   const { logout, user } = useContext(AuthContext);
   const [dropdownVisible, setDropdownVisible] = useState(false);
-
   const closeDropdown = () => setDropdownVisible(false);
 
   return (
@@ -31,6 +31,23 @@ const HomeScreen = () => {
           showsVerticalScrollIndicator={false}
         >
           <View style={styles.headerContainer}>
+            <View style={styles.welcomeContainer}>
+              <View style={styles.rowBetween}>
+                <TouchableOpacity
+                  onPress={(e) => {
+                    e.stopPropagation();
+                    setDropdownVisible(!dropdownVisible);
+                  }}
+                  style={styles.dropdownToggle}
+                >
+                  <MaterialIcons name="account-circle" size={45} color="#64748b" />
+                </TouchableOpacity>
+                <View>
+                  <Text style={styles.welcomeText}>Welcome back,</Text>
+                  <Text numberOfLines={1} ellipsizeMode="tail" style={styles.companyText}>{user?.user_name}</Text>
+                </View>
+              </View>
+            </View>
             <View style={styles.iconContainer}>
               <Image
                 source={logo}
@@ -42,41 +59,25 @@ const HomeScreen = () => {
                 }}
               />
             </View>
-            <View style={styles.welcomeContainer}>
-              <View style={styles.rowBetween}>
-                <View>
-                  <Text style={styles.welcomeText}>Hello,</Text>
-                  <Text style={styles.companyText}>{user?.user_name}</Text>
-                </View>
-                <TouchableOpacity
-                  onPress={(e) => {
-                    e.stopPropagation();
-                    setDropdownVisible(!dropdownVisible);
-                  }}
-                  style={styles.dropdownToggle}
-                >
-                  <MaterialIcons name="account-circle" size={44} color="gray" />
-                </TouchableOpacity>
-              </View>
-            </View>
           </View>
           {dropdownVisible && (
             <TouchableWithoutFeedback onPress={(e) => e.stopPropagation()}>
               <View style={styles.dropdownMenu}>
-                <TouchableOpacity onPress={logout} style={styles.dropdownItem}>
+                <TouchableOpacity onPress={() => logout()}
+                  style={styles.dropdownItem}>
                   <Text style={styles.dropdownText}>Logout</Text>
                 </TouchableOpacity>
               </View>
             </TouchableWithoutFeedback>
           )}
         </View>
-        <View style={styles.cardWrapper}>
+        <ImageBackground source={bgImage} style={styles.cardWrapper} resizeMode="cover">
           <View style={styles.cardContainer}>
             <TouchableOpacity
               style={styles.card}
               onPress={() => navigation.navigate("BarcodeScanner")}
             >
-              <MaterialIcons name="qr-code-scanner" size={32} color="#3b82f6" />
+              <MaterialIcons name="qr-code-scanner" size={22} color="black" />
               <Text style={styles.cardText}>Scan Customer</Text>
             </TouchableOpacity>
           </View>
@@ -85,11 +86,11 @@ const HomeScreen = () => {
               style={styles.card}
               onPress={() => navigation.navigate("WarehouseScanner")}
             >
-              <MaterialIcons name="warehouse" size={32} color="#3b82f6" />
+              <MaterialIcons name="warehouse" size={22} color="black" />
               <Text style={styles.cardText}>Scan Warehouse</Text>
             </TouchableOpacity>
           </View>
-        </View>
+          </ImageBackground>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -116,51 +117,54 @@ const styles = StyleSheet.create({
   },
   welcomeContainer: {
     flexDirection: "column",
-    maxWidth: "60%",
+    maxWidth: "50%",
   },
   welcomeText: {
     fontSize: 13,
-    fontWeight: "400",
-    color: "#64748b",
+    color: "#94a3b8",
     fontFamily: "outfit",
   },
   companyText: {
-    fontSize: 17,
-    fontFamily: "outfit-bold",
-    flexShrink: 1,
+    fontSize: 18,
+    fontWeight: "700",
     color: "#0f172a",
-  },
+    fontFamily: "outfit-bold",
+    width: width * 0.4,       
+    overflow: "hidden",        
+  },  
   rowBetween: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     marginTop: 10,
+    gap: 5,
   },
   iconContainer: {
     paddingVertical: 10,
     borderRadius: 15,
   },
   dropdownToggle: {
-    padding: 8,
+    paddingVertical: 5,
     borderRadius: 60,
-    backgroundColor: "#F1F5F9",
   },
   dropdownMenu: {
     position: "absolute",
-    top: 80,
-    right: 30,
+    top: 75,
+    left: 25,
     backgroundColor: "#fff",
-    paddingVertical: 6,
-    paddingHorizontal: 14,
     borderRadius: 8,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
+    zIndex: 4,
   },
   dropdownItem: {
-    paddingVertical: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    position: 'relative',
+    zIndex: 5
   },
 
   dropdownText: {
@@ -168,20 +172,24 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   cardWrapper: {
-    alignItems: "center",
+    flex: 1,
+    width: "100%",
     justifyContent: "center",
-  },
+    paddingBottom: 40,
+  },  
   cardContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 40,
-    paddingHorizontal: 35,
-    gap: 15,
+    marginTop: 20,
+    paddingHorizontal: 55,
+    gap: 10,
   },
   card: {
-    backgroundColor: "#ffffff",
-    padding: 20,
-    borderRadius: 15,
+    backgroundColor: "#fff",
+    flexDirection: 'row',
+    padding: 15,
+    borderRadius: 10,
+    gap: 8,
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
@@ -192,10 +200,9 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   cardText: {
-    marginTop: 10,
     fontSize: 16,
     fontWeight: "600",
-    color: "#1e293b",
+    color: "black",
     textAlign: "center",
   },
 });

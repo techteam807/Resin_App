@@ -5,9 +5,11 @@ import {
   Text,
   View,
   ActivityIndicator,
+  TouchableOpacity,
 } from "react-native";
 import { Camera, CameraView } from "expo-camera";
 import { useNavigation } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
 
 const BarcodeScanner = () => {
   const qrLock = useRef(false);
@@ -56,6 +58,11 @@ const BarcodeScanner = () => {
         }}
       />
       <View style={styles.overlay}>
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+        <Ionicons name="arrow-back" size={25} color="#fff" />
+      </TouchableOpacity>
+
+
         <Text style={styles.instructionText}>Scan Customer Barcode</Text>
         <View style={styles.scanBox}>
           <View style={styles.cornerTopLeft} />
@@ -199,6 +206,16 @@ const styles = StyleSheet.create({
     borderBottomWidth: 4,
     borderRightWidth: 4,
     borderColor: "#00ffcc",
+  },
+
+  backButton: {
+    position: "absolute",
+    top: 10,
+    left: 10,
+    zIndex: 10,
+    padding: 10,
+    backgroundColor: "rgba(0,0,0,0.5)",
+    borderRadius: 25,
   },
 });
 

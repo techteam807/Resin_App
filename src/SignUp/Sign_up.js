@@ -15,6 +15,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/Feather";
 import Img2 from "../../assets/sign_up.jpg";
+import { API_URL } from "@env";
 
 const { width } = Dimensions.get("window");
 
@@ -49,11 +50,10 @@ const Sign_up = () => {
 
   const handleSubmit = async () => {
     if (!validate()) return;
-
     setLoading(true);
     try {
       const response = await fetch(
-        `https://resion-backend.vercel.app/users/signUpUser`,
+        `${API_URL}/users/signUpUser`,
         {
           method: "POST",
           headers: {
@@ -68,6 +68,8 @@ const Sign_up = () => {
       );
 
       const result = await response.json();
+      // console.log("sign up response", result);
+      
 
       if (response.ok) {
         Alert.alert("Success", "OTP sent successfully. Please check your WhatsApp", [
@@ -75,6 +77,7 @@ const Sign_up = () => {
               from: "signup",
               country_code: country,
               mobile_number: mobileNumber,
+              user_name: name,
             })
           }
         ]);

@@ -15,6 +15,7 @@ import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/Feather";
 import Img1 from "../../assets/Sign_in1.jpg";
+import { API_URL } from "@env";
 
 const { width } = Dimensions.get("window");
 
@@ -47,7 +48,7 @@ const Sign_in = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        `https://resion-backend.vercel.app/users/signInUser`,
+        `${API_URL}/users/signInUser`,
         {
           method: "POST",
           headers: {

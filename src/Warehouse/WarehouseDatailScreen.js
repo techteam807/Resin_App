@@ -35,8 +35,9 @@ const WarehouseDatailScreen = () => {
         `${API_URL}/wareHouse/code?wareHouse_code=${barcode}`
       );
       const json = await response.json();
-
-      if (response.ok && json?.data) {
+      console.log("json", json);
+      
+      if (response.ok) {
         setWareHouseData(json.data);
       } else {
         setError("Warehouse not found.");

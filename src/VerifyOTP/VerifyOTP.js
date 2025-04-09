@@ -16,6 +16,7 @@ import {
   import MaterialIcons from "@expo/vector-icons/MaterialIcons";
   import Img3 from "../../assets/OTP.jpg";
 import { AuthContext } from "../Auth/AuthContext";
+import { API_URL } from "@env";
   
   const { width } = Dimensions.get("window");
   
@@ -23,10 +24,13 @@ import { AuthContext } from "../Auth/AuthContext";
     const navigation = useNavigation();
     const { login } = useContext(AuthContext);
     const route = useRoute();
-    const { from, country_code, mobile_number } = route.params || {};
+    const { from, country_code, mobile_number, user_name } = route.params || {};
     const [otp, setOtp] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const [counter, setCounter] = useState(10);
+    const [showResend, setShowResend] = useState(false);
+    const [resetLoading, setResetLoading] = useState(false);
 
     const validateOtp = (value) => {
       if (!value) {
@@ -39,6 +43,16 @@ import { AuthContext } from "../Auth/AuthContext";
       setOtp(value);
     };
 
+    React.useEffect(() => {
+      let timer;
+      if (counter > 0) {
+        timer = setTimeout(() => setCounter(counter - 1), 1000);
+      } else {
+        setShowResend(true);
+      }
+      return () => clearTimeout(timer);
+    }, [counter]);
+
     const handleVerifyOTP = async () => {
         if (error || !otp) {
           setError("Please enter a valid OTP");
@@ -48,10 +62,10 @@ import { AuthContext } from "../Auth/AuthContext";
         let nextScreen = "";
     
         if (from === "signup") {
-          apiUrl = "https://resion-backend.vercel.app/users/verifySignUp";
+          apiUrl = `${API_URL}/users/verifySignUp`;
           nextScreen = "SignUpSuccess";  
         } else if (from === "signin") {
-          apiUrl = "https://resion-backend.vercel.app/users/verifySignIn";  
+          apiUrl = `${API_URL}/users/verifySignIn`;  
           nextScreen = "HomeScreen"; 
         } else {
           Alert.alert("Error", "Invalid request");
@@ -70,6 +84,7 @@ import { AuthContext } from "../Auth/AuthContext";
             }
           );
           const data = await response.json();
+          // console.log("data", data);
           
           if (response.ok) {
             // Alert.alert("Success", "OTP Verified!");
@@ -79,12 +94,86 @@ import { AuthContext } from "../Auth/AuthContext";
             navigation.navigate(nextScreen); 
             setLoading(false)
           } else {
-            Alert.alert("Error", response.error || "Invalid OTP");
+            Alert.alert("Error", data.error || "Invalid OTP");
             setLoading(false)
           }
         } catch (error) {
           Alert.alert("Error", "Failed to verify OTP. Please try again.");
           setLoading(false)
+        }
+      };
+
+      const handleResendSignUp = async () => {
+          setResetLoading(true)
+          // console.log("signUp");
+          
+          try {
+            const response = await fetch(
+              `${API_URL}/users/signUpUser`,
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  user_name: user_name,
+                  mobile_number: mobile_number,
+                  country_code: country_code,
+                }),
+              }
+            );
+            
+      
+            const result = await response.json();
+            // console.log("sign Up response verify", result);
+            
+            if (response.ok) {
+              Alert.alert("Success", "OTP sent successfully. Please check your WhatsApp");
+              setCounter(10);
+              setShowResend(false);
+            } else {
+              Alert.alert("Error", result.message || "Failed to sign Up.");
+            }
+          } catch (error) {
+            console.log("error", error);
+            
+           Alert.alert("Error", "Network error. Please try again.");
+          } finally {
+            setResetLoading(false)
+          }
+        };
+
+    const handleResendSignIn = async () => {
+        setResetLoading(true)
+        // console.log("signin");
+        try {
+          const response = await fetch(
+            `${API_URL}/users/signInUser`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                mobile_number: mobile_number,
+                country_code: country_code,
+              }),
+            }
+          );
+    
+          const result = await response.json();
+    
+          if (response.ok) {
+            Alert.alert("Success", "OTP send successfully. Please check your WhatsApp");
+            setCounter(10);
+            setShowResend(false);
+          } else {
+            Alert.alert("Error", result.message || "Failed to sign in.");
+          }
+        } catch (error) {
+          Alert.alert("Error", "Network error. Please try again.");
+        } finally {
+          setResetLoading(false)
         }
       };
 
@@ -127,13 +216,30 @@ import { AuthContext } from "../Auth/AuthContext";
           </TouchableOpacity>
         </View>
   
-        <Pressable
-          style={styles.signUpContainer}
-          onPress={() => navigation.navigate("Sign_in")} 
-        >
-          <Text style={styles.signUpText}>Already have an account?</Text>
-          <Text style={styles.signUpLink}> Sign In</Text>
-        </Pressable>
+        <View style={styles.signUpContainer}>
+        {showResend ? (
+          <Pressable
+            onPress={from === "signup" ? handleResendSignUp : handleResendSignIn}
+          >
+            <View style={{ flexDirection: 'row', alignItems: 'center', position: 'relative' }}>
+              {resetLoading ? (
+                <>
+                  <ActivityIndicator color="#10B981" size={17} style={{ marginRight: 5 }} />
+                  <Text style={[styles.signUpLink, { fontSize: 16 }]}>Resend OTP</Text>
+                </>
+              ) : (
+                <Text style={[styles.signUpLink, { fontSize: 16 }]}>Resend OTP</Text>
+              )}
+            </View>
+          </Pressable>
+        ) : (
+          <>
+            <Text style={styles.signUpText}>Resend OTP in</Text>
+            <Text style={styles.signUpLink}> 00:{counter < 10 ? `0${counter}` : counter}</Text>
+          </>
+        )}
+      </View>
+
       </ScrollView>
     );
   };
