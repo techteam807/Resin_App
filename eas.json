@@ -13,6 +13,14 @@
           "simulator": true
         }
       },
+      "preview": {
+        "ios":{
+          "simulator":true
+        },
+        "android":{
+          "buildType":"apk"
+        }
+      },
       "production": {
         "distribution": "store",
         "android": {
