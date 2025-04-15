@@ -40,11 +40,21 @@ const HomeScreen = () => {
                   }}
                   style={styles.dropdownToggle}
                 >
-                  <MaterialIcons name="account-circle" size={45} color="#64748b" />
+                  <MaterialIcons
+                    name="account-circle"
+                    size={45}
+                    color="#64748b"
+                  />
                 </TouchableOpacity>
                 <View>
                   <Text style={styles.welcomeText}>Welcome back,</Text>
-                  <Text numberOfLines={1} ellipsizeMode="tail" style={styles.companyText}>{user?.user_name}</Text>
+                  <Text
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                    style={styles.companyText}
+                  >
+                    {user?.user_name}
+                  </Text>
                 </View>
               </View>
             </View>
@@ -63,15 +73,21 @@ const HomeScreen = () => {
           {dropdownVisible && (
             <TouchableWithoutFeedback onPress={(e) => e.stopPropagation()}>
               <View style={styles.dropdownMenu}>
-                <TouchableOpacity onPress={() => logout()}
-                  style={styles.dropdownItem}>
+                <TouchableOpacity
+                  onPress={() => logout()}
+                  style={styles.dropdownItem}
+                >
                   <Text style={styles.dropdownText}>Logout</Text>
                 </TouchableOpacity>
               </View>
             </TouchableWithoutFeedback>
           )}
         </View>
-        <ImageBackground source={bgImage} style={styles.cardWrapper} resizeMode="cover">
+        <ImageBackground
+          source={bgImage}
+          style={styles.cardWrapper}
+          resizeMode="cover"
+        >
           <View style={styles.cardContainer}>
             <TouchableOpacity
               style={styles.card}
@@ -90,7 +106,7 @@ const HomeScreen = () => {
               <Text style={styles.cardText}>Scan Warehouse</Text>
             </TouchableOpacity>
           </View>
-          </ImageBackground>
+        </ImageBackground>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -129,9 +145,9 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: "#0f172a",
     fontFamily: "outfit-bold",
-    width: width * 0.4,       
-    overflow: "hidden",        
-  },  
+    width: width * 0.4,
+    overflow: "hidden",
+  },
   rowBetween: {
     flexDirection: "row",
     alignItems: "center",
@@ -163,8 +179,8 @@ const styles = StyleSheet.create({
   dropdownItem: {
     paddingVertical: 12,
     paddingHorizontal: 14,
-    position: 'relative',
-    zIndex: 5
+    position: "relative",
+    zIndex: 5,
   },
 
   dropdownText: {
@@ -176,7 +192,7 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "center",
     paddingBottom: 40,
-  },  
+  },
   cardContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -186,7 +202,7 @@ const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: "#fff",
-    flexDirection: 'row',
+    flexDirection: "row",
     padding: 15,
     borderRadius: 10,
     gap: 8,
