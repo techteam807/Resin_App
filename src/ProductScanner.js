@@ -27,9 +27,8 @@ const ProductScanner = () => {
   const scannedData = route.params?.scannedData || "No Data";
   const cartridgeNum = route.params?.cartridgeNum || 1;
   const navigation = useNavigation();
-  const { user } = useContext(AuthContext);
-  // console.log("user", user?._id);
-  
+  const { user, location } = useContext(AuthContext);
+  // console.log("user", location);
 
   useEffect(() => {
     (async () => {
@@ -60,6 +59,10 @@ const ProductScanner = () => {
             Product_Codes: scannedText,
             customer_code: scannedData,
             userId: user?._id,
+            geoCoordinates:{
+                longitude: location.longitude,
+                latitude: location.latitude
+            }
           }),
         }
       );

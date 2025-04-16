@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Location from "expo-location";
+import { AppState } from "react-native";
 
 export const AuthContext = createContext();
 
@@ -18,29 +19,65 @@ export const AuthProvider = ({ children }) => {
       setUser(user ? JSON.parse(user) : null);
       setLoading(false);
     };
-    const startLocationTracking = async () => {
+    loadToken();
+  }, []);
+
+  const getLocation = async () => {
+    try {
+      setLocation(null)
+      // console.log("📍 Getting location...", location);
+      
       const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        console.log("❌ Location permission denied");
+      if (status !== 'granted') {
+        Alert.alert(
+          "Location Permission Needed",
+          "We need your location to continue. Please enable it in settings.",
+          [
+            {
+              text: "Cancel",
+              style: "cancel",
+            },
+            {
+              text: "Open Settings",
+              onPress: () => {
+                if (Platform.OS === "ios") {
+                  Linking.openURL("app-settings:");
+                } else {
+                  Linking.openSettings();
+                }
+              },
+            },
+          ]
+        );
         return;
       }
+  
+      const loc = await Location.getCurrentPositionAsync({});
+      const coords = {
+        latitude: loc.coords.latitude,
+        longitude: loc.coords.longitude,
+      };
+      setLocation(coords);
+  
+      // console.log("✅ Location fetched:", coords);
+    } catch (err) {
+      console.error("❌ Location error:", err);
+    }
+  };
+  
 
-      await Location.watchPositionAsync(
-        {
-          accuracy: Location.Accuracy.Highest,
-          distanceInterval: 1,
-          timeInterval: 1000,
-        },
-        (loc) => {
-          const { latitude, longitude } = loc.coords;
-          setLocation(loc.coords);
-          console.log(" Latitude:", latitude);
-          console.log(" Longitude:", longitude);
-        }
-      );
+  useEffect(() => {
+    getLocation();
+
+    const subscription = AppState.addEventListener("change", (nextAppState) => {
+      if (nextAppState === "active") {
+        getLocation();
+      }
+    });
+
+    return () => {
+      subscription.remove();
     };
-    loadToken();
-    startLocationTracking();
   }, []);
 
   const login = async (token, user) => {
