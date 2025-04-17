@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Location from "expo-location";
-import { AppState } from "react-native";
+import { Alert, Platform, Linking } from "react-native";
 
 export const AuthContext = createContext();
 
@@ -13,30 +13,31 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const loadToken = async () => {
-      const token = await AsyncStorage.getItem("userToken");
-      const user = await AsyncStorage.getItem("user");
-      setUserToken(token);
-      setUser(user ? JSON.parse(user) : null);
-      setLoading(false);
+      try {
+        const token = await AsyncStorage.getItem("userToken");
+        const userData = await AsyncStorage.getItem("user");
+        setUserToken(token);
+        setUser(userData ? JSON.parse(userData) : null);
+      } catch (e) {
+        console.error("Error loading token/user:", e);
+      } finally {
+        setLoading(false);
+      }
     };
     loadToken();
   }, []);
 
   const getLocation = async () => {
     try {
-      setLocation(null)
-      // console.log("📍 Getting location...", location);
-      
+      console.log("📍 Requesting location...");
+
       const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
+      if (status !== "granted") {
         Alert.alert(
           "Location Permission Needed",
           "We need your location to continue. Please enable it in settings.",
           [
-            {
-              text: "Cancel",
-              style: "cancel",
-            },
+            { text: "Cancel", style: "cancel" },
             {
               text: "Open Settings",
               onPress: () => {
@@ -51,52 +52,52 @@ export const AuthProvider = ({ children }) => {
         );
         return;
       }
-  
+
       const loc = await Location.getCurrentPositionAsync({});
       const coords = {
         latitude: loc.coords.latitude,
         longitude: loc.coords.longitude,
       };
       setLocation(coords);
-  
-      // console.log("✅ Location fetched:", coords);
+      console.log("✅ Location fetched:", coords);
     } catch (err) {
-      console.error("❌ Location error:", err);
+      console.error("❌ Failed to get location:", err);
     }
   };
-  
-
-  useEffect(() => {
-    getLocation();
-
-    const subscription = AppState.addEventListener("change", (nextAppState) => {
-      if (nextAppState === "active") {
-        getLocation();
-      }
-    });
-
-    return () => {
-      subscription.remove();
-    };
-  }, []);
 
   const login = async (token, user) => {
-    await AsyncStorage.setItem("userToken", token);
-    await AsyncStorage.setItem("user", JSON.stringify(user));
-    setUserToken(token);
-    setUser(user);
+    try {
+      await AsyncStorage.setItem("userToken", token);
+      await AsyncStorage.setItem("user", JSON.stringify(user));
+      setUserToken(token);
+      setUser(user);
+    } catch (err) {
+      console.error("Login error:", err);
+    }
   };
 
   const logout = async () => {
-    await AsyncStorage.removeItem("userToken");
-    await AsyncStorage.removeItem("user");
-    setUserToken(null);
-    setUser(null);
+    try {
+      await AsyncStorage.removeItem("userToken");
+      await AsyncStorage.removeItem("user");
+      setUserToken(null);
+      setUser(null);
+    } catch (err) {
+      console.error("Logout error:", err);
+    }
   };
 
   return (
     <AuthContext.Provider
-      value={{ userToken, user, login, logout, loading, location }}
+      value={{
+        userToken,
+        user,
+        login,
+        logout,
+        loading,
+        location,
+        getLocation, 
+      }}
     >
       {children}
     </AuthContext.Provider>

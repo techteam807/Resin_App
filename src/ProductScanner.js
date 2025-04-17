@@ -59,10 +59,12 @@ const ProductScanner = () => {
             Product_Codes: scannedText,
             customer_code: scannedData,
             userId: user?._id,
-            geoCoordinates:{
+            ...(location?.longitude && location?.latitude && {
+              geoCoordinates: {
                 longitude: location.longitude,
-                latitude: location.latitude
-            }
+                latitude: location.latitude,
+              },
+            }),
           }),
         }
       );

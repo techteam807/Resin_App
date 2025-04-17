@@ -8,20 +8,26 @@ import {
   Dimensions,
   ImageBackground,
 } from "react-native";
-import React, { useContext, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { AuthContext } from "../Auth/AuthContext";
 import logo from "../../assets/BetterwaterTM_Black.png";
 import { MaterialIcons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import bgImage from "../../assets/Add a heading (3).png";
 
 const { width } = Dimensions.get("window");
 
 const HomeScreen = () => {
   const navigation = useNavigation();
-  const { logout, user } = useContext(AuthContext);
+  const { logout, user, getLocation } = useContext(AuthContext);
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const closeDropdown = () => setDropdownVisible(false);
+
+  useFocusEffect(
+    useCallback(() => {
+      getLocation(); 
+    }, [])
+  );
 
   return (
     <TouchableWithoutFeedback onPress={closeDropdown}>
