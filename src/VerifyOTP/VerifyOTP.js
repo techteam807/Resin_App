@@ -60,7 +60,7 @@ import { API_URL } from "@env";
         }
         let apiUrl = "";
         let nextScreen = "";
-    
+        console.log(API_URL);
         if (from === "signup") {
           apiUrl = `${API_URL}/users/verifySignUp`;
           nextScreen = "SignUpSuccess";  

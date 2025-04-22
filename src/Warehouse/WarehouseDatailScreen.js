@@ -29,7 +29,7 @@ const WarehouseDatailScreen = () => {
     setLoading(true);
     setError("");
     setWareHouseData(null);
-
+    console.log(API_URL);
     try {
       const response = await fetch(
         `${API_URL}/wareHouse/code?wareHouse_code=${barcode}`

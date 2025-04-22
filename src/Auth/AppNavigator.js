@@ -10,6 +10,7 @@ import WarehouseDatailScreen from "../Warehouse/WarehouseDatailScreen";
 import WarehouseProductScanner from "../Warehouse/WarehouseProductScanner";
 import Map from "../Map/Map";
 import { StatusBar } from "react-native";
+import ProductStatus from "../ProductStatus";
 
 const Stack = createStackNavigator();
 
@@ -23,6 +24,7 @@ const AppNavigator = () => (
       <Stack.Screen name="ProductScanner" component={ProductScanner} />
       <Stack.Screen name="SuccessProduct" component={SuccessProduct} />
       <Stack.Screen name="WarehouseScanner" component={WarehouseScanner} />
+      <Stack.Screen name="ProductStatusScanner" component={ProductStatus} />
       <Stack.Screen
         name="WarehouseDatailScreen"
         component={WarehouseDatailScreen}

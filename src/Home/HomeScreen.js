@@ -112,6 +112,11 @@ const HomeScreen = () => {
               <Text style={styles.cardText}>Scan Warehouse</Text>
             </TouchableOpacity>
           </View>
+          <View style={styles.cardContainer}>
+            <TouchableOpacity onPress={() => navigation.navigate("ProductStatusScanner")} style={styles.status}>
+              <Text style={styles.textStatus}>Check Cartridge Status</Text>
+            </TouchableOpacity>
+          </View>
         </ImageBackground>
       </View>
     </TouchableWithoutFeedback>
@@ -227,4 +232,13 @@ const styles = StyleSheet.create({
     color: "black",
     textAlign: "center",
   },
+  status: {
+    textAlign: 'center',
+    margin: 'auto',
+  },
+  textStatus: {
+    textDecorationLine: 'underline',
+    fontSize: 12,
+    fontWeight: '500'
+  }
 });

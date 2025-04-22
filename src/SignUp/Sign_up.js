@@ -51,6 +51,7 @@ const Sign_up = () => {
   const handleSubmit = async () => {
     if (!validate()) return;
     setLoading(true);
+    console.log(API_URL);
     try {
       const response = await fetch(
         `${API_URL}/users/signUpUser`,

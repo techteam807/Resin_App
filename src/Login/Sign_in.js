@@ -44,7 +44,7 @@ const Sign_in = () => {
 
   const handleSubmit = async () => {
     if (!validate()) return;
-
+    console.log(API_URL);
     setLoading(true);
     try {
       const response = await fetch(

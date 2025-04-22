@@ -72,6 +72,7 @@ const WarehouseProductScanner = () => {
       );
     } else {
       try {
+        console.log(API_URL);
         setLoading(true);
         const response = await fetch(
           `${API_URL}/wareHouse/products`,

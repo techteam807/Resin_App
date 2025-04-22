@@ -48,6 +48,7 @@ const ProductScanner = () => {
 
     try {
       setLoading(true);
+      console.log(API_URL);
       const response = await fetch(
         `${API_URL}/customers/manageProducts`,
         {

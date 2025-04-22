@@ -32,7 +32,7 @@ const DetailScreen = () => {
   const fetchProductDetails = async (barcode) => {
     setLoading(true);
     setError("");
-
+    console.log(API_URL);
     try {
       const response = await fetch(
         `${API_URL}/customers/code?customer_code=${barcode}`
