@@ -26,9 +26,10 @@ const ProductScanner = () => {
   const route = useRoute();
   const scannedData = route.params?.scannedData || "No Data";
   const cartridgeNum = route.params?.cartridgeNum || 1;
+  const uploadedImageUrl = route.params?.uploadedImageUrl || null;
   const navigation = useNavigation();
   const { user, location } = useContext(AuthContext);
-  // console.log("user", location);
+  console.log("uploadedImageUrl", uploadedImageUrl);
 
   useEffect(() => {
     (async () => {

@@ -2,7 +2,7 @@
   "expo": {
     "name": "Better Water",
     "slug": "BarcodeScan-App",
-    "version": "1.0.17",
+    "version": "1.0.18",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -16,7 +16,7 @@
       "supportsTablet": true
     },
     "android": {
-      "versionCode": 17,
+      "versionCode": 18,
       "adaptiveIcon": {
         "foregroundImage": "./assets/batter_water.png",
         "backgroundColor": "#ffffff"
