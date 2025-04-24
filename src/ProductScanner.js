@@ -61,6 +61,7 @@ const ProductScanner = () => {
             Product_Codes: scannedText,
             customer_code: scannedData,
             userId: user?._id,
+            url: uploadedImageUrl,
             ...(location?.longitude && location?.latitude && {
               geoCoordinates: {
                 longitude: location.longitude,
