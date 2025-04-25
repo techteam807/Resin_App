@@ -12,9 +12,10 @@ import {
 import { Camera, CameraView } from "expo-camera";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
-import { API_URL } from "@env";
+// import { API_URL } from "@env";
 import { AuthContext } from "../Auth/AuthContext";
 import { Ionicons } from "@expo/vector-icons";
+import { API_URL } from "../Utility/jsonFile";
 
 const WarehouseProductScanner = () => {
   const qrLock = useRef(false);
@@ -72,7 +73,6 @@ const WarehouseProductScanner = () => {
       );
     } else {
       try {
-        console.log(API_URL);
         setLoading(true);
         const response = await fetch(
           `${API_URL}/wareHouse/products`,

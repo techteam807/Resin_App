@@ -15,7 +15,8 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/Feather";
 import Img2 from "../../assets/sign_up.jpg";
-import { API_URL } from "@env";
+import { API_URL } from "../Utility/jsonFile";
+// import { API_URL } from "@env";
 
 const { width } = Dimensions.get("window");
 
@@ -51,7 +52,6 @@ const Sign_up = () => {
   const handleSubmit = async () => {
     if (!validate()) return;
     setLoading(true);
-    console.log(API_URL);
     try {
       const response = await fetch(
         `${API_URL}/users/signUpUser`,

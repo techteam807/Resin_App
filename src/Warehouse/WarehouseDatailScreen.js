@@ -8,7 +8,8 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { API_URL } from "@env";
+import { API_URL } from "../Utility/jsonFile";
+// import { API_URL } from "@env";
 
 const WarehouseDatailScreen = () => {
   const navigation = useNavigation();
@@ -29,7 +30,6 @@ const WarehouseDatailScreen = () => {
     setLoading(true);
     setError("");
     setWareHouseData(null);
-    console.log(API_URL);
     try {
       const response = await fetch(
         `${API_URL}/wareHouse/code?wareHouse_code=${barcode}`
@@ -37,13 +37,13 @@ const WarehouseDatailScreen = () => {
       const json = await response.json();
       console.log("json", json);
       
-      if (response.ok) {
-        setWareHouseData(json.data);
+      if (response.ok && json?.data) {
+        setWareHouseData(json?.data);
       } else {
-        setError("Warehouse not found.");
+        setError(json?.message);
       }
     } catch (err) {
-      setError("Failed to fetch data. Please try again.");
+      setError(err.message);
     } finally {
       setLoading(false);
     }

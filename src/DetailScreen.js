@@ -10,9 +10,10 @@ import {
   Modal,
 } from "react-native";
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
-import { API_URL } from '@env'
+// import { API_URL } from '@env'
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
+import { API_URL } from "./Utility/jsonFile";
 
 const DetailScreen = () => {
   const navigation = useNavigation();
@@ -26,7 +27,6 @@ const DetailScreen = () => {
   const [uploadedImageUrl, setUploadedImageUrl] = useState(null);
   const [uploading, setUploading] = useState(false);
   console.log("productData", uploadedImageUrl);
-  console.log(API_URL);
 
   useFocusEffect(
     useCallback(() => {
@@ -39,24 +39,22 @@ const DetailScreen = () => {
   const fetchProductDetails = async (barcode) => {
     setLoading(true);
     setError("");
-    // console.log(API_URL);
     try {
       const response = await fetch(
         `${API_URL}/customers/code?customer_code=${barcode}`
       );
       const data = await response.json();
-      console.log("data",data.data);
+      // console.log("data",data);
       
 
-      if (response.ok) {
+      if (response.ok && data?.data) {
         setProductData(data?.data);
       } else {
-        setError("Customer not found.");
+        setError(data.message);
       }
     } catch (err) {
-      setError("Failed to fetch data. Please try again.");
+      setError(err.message);
     }
-
     setLoading(false);
   };
 

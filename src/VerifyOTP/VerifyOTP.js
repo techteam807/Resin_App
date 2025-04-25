@@ -16,7 +16,8 @@ import {
   import MaterialIcons from "@expo/vector-icons/MaterialIcons";
   import Img3 from "../../assets/OTP.jpg";
 import { AuthContext } from "../Auth/AuthContext";
-import { API_URL } from "@env";
+import { API_URL } from "../Utility/jsonFile";
+// import { API_URL } from "@env";
   
   const { width } = Dimensions.get("window");
   
@@ -60,7 +61,6 @@ import { API_URL } from "@env";
         }
         let apiUrl = "";
         let nextScreen = "";
-        console.log(API_URL);
         if (from === "signup") {
           apiUrl = `${API_URL}/users/verifySignUp`;
           nextScreen = "SignUpSuccess";  

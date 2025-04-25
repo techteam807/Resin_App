@@ -14,9 +14,10 @@ import { Camera, CameraView } from "expo-camera";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 const { width, height } = Dimensions.get("window");
-import { API_URL } from "@env";
+// import { API_URL } from "@env";
 import { AuthContext } from "./Auth/AuthContext";
 import { Ionicons } from "@expo/vector-icons";
+import { API_URL } from "./Utility/jsonFile";
 
 const ProductScanner = () => {
   const qrLock = useRef(false);
@@ -49,7 +50,6 @@ const ProductScanner = () => {
 
     try {
       setLoading(true);
-      console.log(API_URL);
       const response = await fetch(
         `${API_URL}/customers/manageProducts`,
         {

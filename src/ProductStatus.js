@@ -12,7 +12,8 @@ import {
 import { Camera, CameraView } from "expo-camera";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
-import { API_URL } from '@env'
+import { API_URL } from "./Utility/jsonFile";
+// import { API_URL } from '@env'
 
 export default function ProductStatus() {
     const qrLock = useRef(false);
@@ -49,7 +50,6 @@ export default function ProductStatus() {
       const fetchProductDetails = async (productCode) => {
           setLoading(true);
           try {
-            console.log(API_URL);
             const response = await fetch(
               `${API_URL}/products/code?product_code=${productCode}`
             );
@@ -57,7 +57,7 @@ export default function ProductStatus() {
             // console.log("data",data);
             
       
-            if (response.ok) {
+            if (response.ok && data.data) {
                 setProductStatus(data.data);
                 setModalVisible(true);
             } else {
