@@ -12,6 +12,7 @@ import {
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import { API_URL } from '@env'
 import * as ImagePicker from 'expo-image-picker';
+import * as ImageManipulator from 'expo-image-manipulator';
 
 const DetailScreen = () => {
   const navigation = useNavigation();
@@ -25,7 +26,7 @@ const DetailScreen = () => {
   const [uploadedImageUrl, setUploadedImageUrl] = useState(null);
   const [uploading, setUploading] = useState(false);
   console.log("productData", uploadedImageUrl);
-  
+  console.log(API_URL);
 
   useFocusEffect(
     useCallback(() => {
@@ -38,7 +39,7 @@ const DetailScreen = () => {
   const fetchProductDetails = async (barcode) => {
     setLoading(true);
     setError("");
-    console.log(API_URL);
+    // console.log(API_URL);
     try {
       const response = await fetch(
         `${API_URL}/customers/code?customer_code=${barcode}`
@@ -64,10 +65,17 @@ const DetailScreen = () => {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       quality: 1,
     });
-
+  
     if (!result.canceled) {
-      // setImage(result.assets[0].uri);
-      uploadToCloudinary(result.assets[0].uri);
+      const image = result.assets[0];
+  
+      const manipResult = await ImageManipulator.manipulateAsync(
+        image.uri,
+        [{ resize: { width: 1024 } }],
+        { compress: 0.7, format: ImageManipulator.SaveFormat.JPEG }
+      );
+  
+      uploadToCloudinary(manipResult.uri);
     }
   };
 
