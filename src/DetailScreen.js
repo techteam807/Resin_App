@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   Image,
   Modal,
+  Alert,
 } from "react-native";
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 // import { API_URL } from '@env'
@@ -26,6 +27,8 @@ const DetailScreen = () => {
   const [showModal, setShowModal] = useState(false);
   const [uploadedImageUrl, setUploadedImageUrl] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState("");
+  const [showErrorModal, setShowErrorModal] = useState(false);
   console.log("productData", uploadedImageUrl);
 
   useFocusEffect(
@@ -35,6 +38,25 @@ const DetailScreen = () => {
       }
     }, [scannedData])
   );
+
+  // const fetchProductDetails = async (barcode) => {
+  //   setLoading(true);
+  //   setError("");
+  
+  //   try {
+  //     const response = await fetch(`${API_URL}/customers/code?customer_code=${barcode}`);
+  //     const data = await response.json();
+  
+  //     if (!response.ok) {
+  //       throw new Error(data.message || 'Something went wrong!');
+  //     } 
+  //     setProductData(data?.data);
+  //   } catch (err) {
+  //     setError(err.message || 'Something went wrong!');
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   const fetchProductDetails = async (barcode) => {
     setLoading(true);
@@ -81,30 +103,40 @@ const DetailScreen = () => {
     const data = new FormData();
     data.append("file", {
       uri: imageUri,
-      type: "image/jpeg", 
+      type: "image/jpeg",
       name: "upload.jpg",
     });
     data.append("upload_preset", "expo_upload");
     data.append("cloud_name", "dwejyapuh");
     setUploading(true);
+  
     try {
       let res = await fetch("https://api.cloudinary.com/v1_1/dwejyapuh/image/upload", {
         method: "POST",
         body: data,
       });
-
+  
       let json = await res.json();
-      console.log("Cloudinary upload response:", json?.secure_url);
+      console.log("Cloudinary upload response:", json);
+  
+      if (json?.error) {
+        setUploadError(json.error.message || "Upload failed on Cloudinary");
+        setShowErrorModal(true);
+      }
+  
       if (json?.secure_url) {
         setUploadedImageUrl(json?.secure_url);
         setShowModal(true);
       }
     } catch (err) {
       console.error("Upload failed", err);
+      setUploadError(err.message || "Something went wrong during upload. Please try again.");
+      setShowErrorModal(true);
     } finally {
       setUploading(false);
     }
   };
+  
   
 
   return (
@@ -174,7 +206,7 @@ const DetailScreen = () => {
         </TouchableOpacity>
       </View>
       <Modal
-        animationType="slide"
+        animationType="fade"
         transparent={true}
         visible={showModal}
         onRequestClose={() => {setShowModal(false); setUploadedImageUrl(null);}}
@@ -197,6 +229,36 @@ const DetailScreen = () => {
               onPress={() => {
                 setShowModal(false);
                 navigation.navigate("ProductScanner", { scannedData, cartridgeNum: productData?.cartridgeNum || 1, uploadedImageUrl });
+              }}
+            >
+              <Text style={styles.btnText}>Open Product Scanner</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={showErrorModal}
+        onRequestClose={() => {setShowErrorModal(false); setUploadError('')}}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContainer}>
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={() => {setShowErrorModal(false); setUploadError('')}}
+            >
+              <Text style={styles.closeButtonText}>✕</Text>
+            </TouchableOpacity>
+            <Text style={styles.modalTitle}>Upload Failed</Text>
+            <Text style={styles.errorMessage}>{uploadError}</Text>
+
+            <TouchableOpacity
+              style={styles.primaryBtn1}
+              onPress={() => {
+                setShowErrorModal(false);
+                setUploadError('');
+                navigation.navigate("ProductScanner", { scannedData, cartridgeNum: productData?.cartridgeNum || 1 });
               }}
             >
               <Text style={styles.btnText}>Open Product Scanner</Text>
@@ -391,6 +453,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     color: '#1A1A2E',
+  },
+  errorMessage: {
+    color: 'red',
+    fontSize: 16,
+    marginVertical: 10,
+    textAlign: 'center',
   },
   
 });

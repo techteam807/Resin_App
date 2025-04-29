@@ -53,7 +53,10 @@ export const AuthProvider = ({ children }) => {
         return;
       }
 
-      const loc = await Location.getCurrentPositionAsync({});
+      const loc = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.Highest,
+      });
+      
       const coords = {
         latitude: loc.coords.latitude,
         longitude: loc.coords.longitude,

@@ -7,8 +7,9 @@ import {
   TouchableWithoutFeedback,
   Dimensions,
   ImageBackground,
+  AppState,
 } from "react-native";
-import React, { useCallback, useContext, useState } from "react";
+import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "../Auth/AuthContext";
 import logo from "../../assets/BetterwaterTM_Black.png";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -22,12 +23,29 @@ const HomeScreen = () => {
   const { logout, user, getLocation } = useContext(AuthContext);
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const closeDropdown = () => setDropdownVisible(false);
+  const appState = useRef(AppState.currentState);
 
   useFocusEffect(
     useCallback(() => {
       getLocation(); 
     }, [])
   );
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener("change", (nextAppState) => {
+      if (
+        appState.current.match(/inactive|background/) &&
+        nextAppState === "active"
+      ) {
+        getLocation();
+      }
+      appState.current = nextAppState;
+    });
+
+    return () => {
+      subscription.remove();
+    };
+  }, []);
 
   return (
     <TouchableWithoutFeedback onPress={closeDropdown}>
