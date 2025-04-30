@@ -23,7 +23,7 @@ const HomeScreen = () => {
   const { logout, user, getLocation } = useContext(AuthContext);
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const closeDropdown = () => setDropdownVisible(false);
-  const appState = useRef(AppState.currentState);
+  // const appState = useRef(AppState.currentState);
 
   useFocusEffect(
     useCallback(() => {
@@ -31,21 +31,21 @@ const HomeScreen = () => {
     }, [])
   );
 
-  useEffect(() => {
-    const subscription = AppState.addEventListener("change", (nextAppState) => {
-      if (
-        appState.current.match(/inactive|background/) &&
-        nextAppState === "active"
-      ) {
-        getLocation();
-      }
-      appState.current = nextAppState;
-    });
+  // useEffect(() => {
+  //   const subscription = AppState.addEventListener("change", (nextAppState) => {
+  //     if (
+  //       appState.current.match(/inactive|background/) &&
+  //       nextAppState === "active"
+  //     ) {
+  //       getLocation();
+  //     }
+  //     appState.current = nextAppState;
+  //   });
 
-    return () => {
-      subscription.remove();
-    };
-  }, []);
+  //   return () => {
+  //     subscription.remove();
+  //   };
+  // }, []);
 
   return (
     <TouchableWithoutFeedback onPress={closeDropdown}>
@@ -115,7 +115,7 @@ const HomeScreen = () => {
           <View style={styles.cardContainer}>
             <TouchableOpacity
               style={styles.card}
-              onPress={() => navigation.navigate("BarcodeScanner")}
+              onPress={() => {navigation.navigate("BarcodeScanner"); getLocation()}}
             >
               <MaterialIcons name="qr-code-scanner" size={22} color="black" />
               <Text style={styles.cardText}>Scan Customer</Text>
