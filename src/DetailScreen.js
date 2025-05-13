@@ -9,6 +9,7 @@ import {
   Image,
   Modal,
   Alert,
+  TextInput,
 } from "react-native";
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 // import { API_URL } from '@env'
@@ -29,6 +30,7 @@ const DetailScreen = () => {
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState("");
   const [showErrorModal, setShowErrorModal] = useState(false);
+  const [score, setScore] = useState(null);
   console.log("productData", uploadedImageUrl);
 
   useFocusEffect(
@@ -179,6 +181,17 @@ const DetailScreen = () => {
         </View>
       )}
 
+      <View style={styles.inputcontainer}>
+  <TextInput
+    style={styles.input}
+    placeholder="Enter Water Report (mg/l)"
+    placeholderTextColor="#888"
+    keyboardType="numeric"
+    value={score}
+    onChangeText={setScore}
+  />
+</View>
+
       <View style={styles.buttonGroup}>
         {!error &&
           productData?.products &&
@@ -186,7 +199,7 @@ const DetailScreen = () => {
           productData.products.length > 0 && (
           <TouchableOpacity
             style={styles.primaryBtn}
-            onPress={() => navigation.navigate("ProductScanner", { scannedData, cartridgeNum: productData?.cartridgeNum || 1 })}
+            onPress={() => navigation.navigate("ProductScanner", { scannedData, cartridgeNum: productData?.cartridgeNum || 1, score })}
           >
             <Text style={styles.btnText}>Open Product Scanner</Text>
           </TouchableOpacity>
@@ -228,7 +241,7 @@ const DetailScreen = () => {
               style={styles.primaryBtn1}
               onPress={() => {
                 setShowModal(false);
-                navigation.navigate("ProductScanner", { scannedData, cartridgeNum: productData?.cartridgeNum || 1, uploadedImageUrl });
+                navigation.navigate("ProductScanner", { scannedData, cartridgeNum: productData?.cartridgeNum || 1, uploadedImageUrl, score });
               }}
             >
               <Text style={styles.btnText}>Open Product Scanner</Text>
@@ -258,7 +271,7 @@ const DetailScreen = () => {
               onPress={() => {
                 setShowErrorModal(false);
                 setUploadError('');
-                navigation.navigate("ProductScanner", { scannedData, cartridgeNum: productData?.cartridgeNum || 1 });
+                navigation.navigate("ProductScanner", { scannedData, cartridgeNum: productData?.cartridgeNum || 1,score });
               }}
             >
               <Text style={styles.btnText}>Open Product Scanner</Text>
@@ -460,7 +473,15 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     textAlign: 'center',
   },
-  
+   inputcontainer: {
+    width: "99%"
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    padding: 10,
+  },
 });
 
 export default DetailScreen;

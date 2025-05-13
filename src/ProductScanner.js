@@ -28,6 +28,7 @@ const ProductScanner = () => {
   const scannedData = route.params?.scannedData || "No Data";
   const cartridgeNum = route.params?.cartridgeNum || 1;
   const uploadedImageUrl = route.params?.uploadedImageUrl || null;
+  const score = route.params?.score || null;
   const navigation = useNavigation();
   const { user, location } = useContext(AuthContext);
   console.log("uploadedImageUrl", uploadedImageUrl);
@@ -67,6 +68,7 @@ const ProductScanner = () => {
                 longitude: location.longitude,
                 latitude: location.latitude,
               },
+            score : score,
             }),
           }),
         }
@@ -78,7 +80,8 @@ const ProductScanner = () => {
 
       if (result?.status === true) {
         navigation.navigate("SuccessProduct");
-      } else {
+      } else 
+      {
         let errorMessage = "Unknown error";
 
         if (result?.message) {
@@ -95,6 +98,10 @@ const ProductScanner = () => {
           if (result.message.deleted) {
             errors.push(`• Deleted: ${result.message.deleted}`);
           }
+          if(result.message.errorMessages)
+          {
+            errors.push(result.message.errorMessages)
+          }
 
           if (errors.length > 0) {
             errorMessage = errors.join("\n\n");
@@ -104,6 +111,8 @@ const ProductScanner = () => {
         Alert.alert("🚨 Submission Failed", errorMessage || "Unknown error");
       }
     } catch (error) {
+      console.log(error);
+      
       Alert.alert("Error", "Network error. Please try again.");
     } finally {
       setLoading(false);
