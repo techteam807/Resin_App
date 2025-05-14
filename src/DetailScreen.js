@@ -36,6 +36,7 @@ const DetailScreen = () => {
   const [uploadError, setUploadError] = useState("");
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [score, setScore] = useState(null);
+  const [scoreError, setScoreError] = useState("");
   console.log("productData", uploadedImageUrl);
 
   useFocusEffect(
@@ -190,17 +191,22 @@ const DetailScreen = () => {
         </View>
       )}
 
-      {/* Water Report Input */}
-      <View style={styles.inputContainer}>
+      <View style={styles.rowInput}>
+        <Text style={styles.label}>Enter Water Report:</Text>
         <TextInput
           style={styles.input}
-          placeholder="Enter Water Report"
           value={score}
-          onChangeText={setScore}
+          onChangeText={(text) => {
+            setScore(text);
+            if (text.trim() !== "") setScoreError(""); // Clear error on typing
+          }}
           keyboardType="numeric"
+          placeholder="e.g. 45"
+          placeholderTextColor="#999"
         />
-        <Text style={styles.unit}>mg/L</Text>
+        <Text style={styles.unit}>(mg/L)</Text>
       </View>
+      {scoreError ? <Text style={styles.errorText}>{scoreError}</Text> : null}
 
       <View style={styles.buttonGroup}>
         {!error &&
@@ -209,13 +215,19 @@ const DetailScreen = () => {
           productData.products.length > 0 && (
             <TouchableOpacity
               style={styles.primaryBtn}
-              onPress={() =>
+              onPress={() => {
+                if (!score || score.trim() === "") {
+                  setScoreError("Water report score is required.");
+                  return;
+                }
+
+                setScoreError("");
                 navigation.navigate("ProductScanner", {
                   scannedData,
                   cartridgeNum: productData?.cartridgeNum || 1,
                   score,
-                })
-              }
+                });
+              }}
             >
               <MaterialIcons name="qr-code-scanner" size={20} color="#FFFFFF" />
               <Text style={styles.btnText}>Open Product Scanner</Text>
@@ -269,6 +281,12 @@ const DetailScreen = () => {
             <TouchableOpacity
               style={styles.primaryBtn1}
               onPress={() => {
+                if (!score || score.trim() === "") {
+                  setScoreError("Water report score is required.");
+                  return;
+                }
+
+                setScoreError(""); // Clear error if valid
                 setShowModal(false);
                 navigation.navigate("ProductScanner", {
                   scannedData,
@@ -309,6 +327,11 @@ const DetailScreen = () => {
             <TouchableOpacity
               style={styles.primaryBtn1}
               onPress={() => {
+                if (!score || score.trim() === "") {
+                  setScoreError("Water report score is required.");
+                  return;
+                }
+                setScoreError("");
                 setShowErrorModal(false);
                 setUploadError("");
                 navigation.navigate("ProductScanner", {
@@ -432,9 +455,9 @@ const styles = StyleSheet.create({
     // marginTop: 10,
   },
   primaryBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     gap: 5,
     backgroundColor: "#10B981",
     paddingVertical: 16,
@@ -461,9 +484,9 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   secondaryBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     gap: 5,
     backgroundColor: "#EF4444",
     paddingVertical: 16,
@@ -532,36 +555,47 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     textAlign: "center",
   },
-  inputContainer: {
+  rowInput: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 24,
+    // paddingBottom: 4,
+    padding: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    marginVertical: 10,
+    paddingHorizontal: 15,
     backgroundColor: "#fff",
     borderRadius: 12,
+    alignItems: "center",
     shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 4 },
-    shadowRadius: 12,
-    elevation: 6,
-    // paddingHorizontal: 16,
-    // height: 56,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  label: {
+    fontSize: 14,
+    color: "#333",
+    marginRight: 8,
   },
   input: {
-    flex: 7, // 70% of the container's width
+    flex: 1,
     fontSize: 16,
-    color: "#1F2937",
-    paddingLeft: 10,
-    borderRadius: 15,
-    height: 45,
-    backgroundColor: "#fff",
+    borderBottomWidth: 1,
+    borderColor: "#aaa",
+    color: "#000",
+    paddingVertical: 4,
   },
   unit: {
-    flex: 3, // 30% of the container's width
-    fontWeight: "500",
-    fontSize: 18,
-    color: "#6B7280",
-    textAlign: "right",
-    paddingRight: 15,
+    fontSize: 14,
+    color: "#444",
+    marginLeft: 8,
+  },
+  errorText: {
+    color: "red",
+    fontSize: 12,
+    marginBottom: 5,
+    marginLeft: 10,
   },
 });
 
